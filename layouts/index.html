@@ -21,7 +21,7 @@
     <div class="landing-page-searchbar uk-text-center uk-width-1-2@l uk-text-middle">
       <form class="uk-width-1-1 uk-text-large" method="GET" action="/search">
         {{- partial "searchbar.html" -}}
-        <button type="submit" class="uk-width-1-4@m uk-button uk-button-primary">
+        <button type="submit" class="uk-margin-top uk-width-1-4@m uk-button uk-button-primary">
           Search
         </button>
       </form>
@@ -135,4 +135,10 @@
   <br>
 </div>
 
+{{ end }}
+
+{{ define "javascripts" }}
+<script type="text/javascript" src="{{ "js/particles.min.js" | relURL }}"></script>
+{{ $js := resources.Get "js/landing_page.js" | resources.Minify }}
+<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
 {{ end }}

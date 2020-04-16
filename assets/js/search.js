@@ -22,30 +22,6 @@ const fuse_options = {
 const fuse = new Fuse(entries, fuse_options);
 
 /*
- * Helper functions
- */
-
-function month_name(month_num) {
-  /* Return the name of a month corresponding to a number between
-   * 1 and 12. */
-  switch (month_num) {
-    case 1: return "January";
-    case 2: return "February";
-    case 3: return "March";
-    case 4: return "April";
-    case 5: return "May";
-    case 6: return "June";
-    case 7: return "July";
-    case 8: return "August";
-    case 9: return "September";
-    case 10: return "October";
-    case 11: return "November";
-    case 12: return "December";
-    default: return "";
-  }
-}
-
-/*
  * Vue components for rendering the page
  */
 
@@ -55,13 +31,16 @@ const _search_result_template = `
   <div>
     <div><span class="uk-text-bold">Authors:</span> {{ authors }}</div>
     <div><span class="uk-text-bold">Published:</span> {{ published }}</div>
+    <p>
+      <a v-bind:href="'/entries/?id=' + entry_id">See more</a>
+    </p>
   </div>
   <hr>
 </div>
-`
+`;
 
 Vue.component("search-result", {
-  props: ["title", "published", "authors"],
+  props: ["title", "published", "authors", "entry_id"],
   template: _search_result_template
 });
 
@@ -73,25 +52,8 @@ function generate_result_component(result) {
 
   // Entry title
   el.setAttribute("title", item.title);
-
-  // Entry publication date
-  let publication_date = ""
-  if ( item.day !== null ) {
-    publication_date += item.day;
-  }
-  if ( item.month !== null ) {
-    publication_date += " " + month_name(item.month);
-  }
-  if ( item.year !== null ) {
-    publication_date += " " + item.year;
-  }
-  el.setAttribute("published", publication_date);
-
-  // Entry authors
-  if ( item.authors.length === 0 ) {
-    item.authors = ["Unknown"];
-  }
-  el.setAttribute("authors", item.authors.join(", "));
+  el.setAttribute("published", get_publication_date(item));
+  el.setAttribute("authors", get_authors(item));
 
   return el;
 }
@@ -110,6 +72,7 @@ function search(pattern) {
    * returned. */
   for ( let ii = 0; ii < results.length; ++ii ) {
     const el = generate_result_component(results[ii]);
+    el.setAttribute("entry_id", ii);
     search_result_el.appendChild(el);
   }
 
