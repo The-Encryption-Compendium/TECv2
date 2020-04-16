@@ -21,11 +21,13 @@ const default_fuse_options = {
  */
 
 const _search_stats_template = `
-<div class="uk-width-1-2@m">
-  <h3>Found {{ n_results }} results</h3>
-</div>
-<div class="uk-width-1-2@m uk-text-right uk-text-small">
-  <span class="monospace uk-text-muted">Search finished in {{ qtime }}ms</span>
+<div class="uk-grid-match" uk-grid>
+  <div class="uk-width-1-2@m">
+    <h3>Found {{ n_results }} results</h3>
+  </div>
+  <div class="uk-width-1-2@m uk-text-right uk-text-small">
+    <span class="monospace uk-text-muted">Search finished in {{ qtime }}ms</span>
+  </div>
 </div>`;
 
 const _search_result_template = `
