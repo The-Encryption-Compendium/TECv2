@@ -14,7 +14,7 @@
 
   {{ $cssTarget := "css/style.css" }}
   {{ $cssOptions := (dict "targetPath" $cssTarget "enableSourceMap" true "outputStyle" "compressed") }}
-  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS $cssOptions }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "tec.style.scss" . | toCSS $cssOptions }}
   {{ $style := $style | fingerprint }}
   <link
     rel="stylesheet"
