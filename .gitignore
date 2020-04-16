@@ -1,3 +1,6 @@
 # Hugo generated files
 public/
 resources/
+
+# Emacs files
+*~

@@ -1,0 +1,45 @@
+{{ define "main" }}
+
+<div class="uk-container">
+  <div class="uk-margin-top">
+    <h1 class="uk-h1">
+      Search results
+    </h1>
+
+    <hr>
+
+    <div id="search_results" class="uk-container">
+      <div class="uk-grid-match" uk-grid>
+        <div class="uk-width-1-2@m"> 
+          <h3>Found [[ n_results ]] results</h3>
+        </div>
+        <div class="uk-width-1-2@m uk-text-right uk-text-small">
+          <span class="monospace uk-text-muted">Search finished in [[ qtime ]]ms</span>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="uk-container uk-width-1-2@m uk-text-center">
+        <form method="GET" action="/search">
+          {{- partial "searchbar.html" -}}
+          <button
+            type="submit"
+            class="uk-width-1-4@m uk-button uk-button-primary uk-margin-top">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <br>
+
+    </div>
+  </div>
+</div>
+
+{{ end }}
+
+{{ define "javascripts" }}
+{{ $js := resources.Get "js/search.js" | resources.Minify }}
+<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+{{ end }}

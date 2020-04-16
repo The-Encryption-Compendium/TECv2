@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+  {{- partial "head.html" -}}
+
+  <body>
+    {{- partial "navbar.html" -}}
+
+    <div class="content">
+      {{ block "main" . }}
+      {{ end }}
+    </div>
+
+    {{- partial "footer.html" -}}
+
+    {{/*
+    Javascript imports
+    */}}
+
+    <script type="text/javascript" src="{{ "js/jquery-3.4.1.min.js" | absURL }}"></script>
+    <script type="text/javascript" src="{{ "js/uikit.min.js" | absURL }}"></script>
+    <script type="text/javascript" src="{{ "js/uikit-icons.min.js" | absURL }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+
+    {{ $js := resources.Get "js/entries.js" | resources.Minify }}
+    <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+
+    {{ block "javascripts" . }}
+    {{ end }}
+  </body>
+</html>

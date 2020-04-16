@@ -1,0 +1,24 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, shrink-to-fit=no" />
+  <title>{{ .Site.Title }}</title>
+
+  {{ $style := resources.Get "css/uikit.min.css" }}
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ $style.RelPermalink }}">
+
+  {{ $cssTarget := "css/style.css" }}
+  {{ $cssOptions := (dict "targetPath" $cssTarget "enableSourceMap" true "outputStyle" "compressed") }}
+  {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.scss" . | toCSS $cssOptions }}
+  {{ $style := $style | fingerprint }}
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ $style.RelPermalink }}"
+    integrity="{{ $style.Data.Integrity }}">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>

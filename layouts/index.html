@@ -1,0 +1,138 @@
+{{ define "main" }}
+
+<div class="uk-container">
+
+  {{/* Particle animation */}}
+  <div id="particles-js" class="particles-wrapper"></div>
+
+  <div class="uk-margin-top uk-grid-large uk-text-middle" uk-grid>
+    <div class="uk-width-1-2@l">
+      <h1 class="site-title uk-heading-medium uk-heading-primary uk-text-break">
+        <p>The</p>
+        <p>Encryption</p>
+        <p>Compendium</p>
+      </h1>
+      <h2 class="site-title">
+        The encryption literature database
+      </h2>
+    </div>
+
+    {{/* Search bar */}}
+    <div class="landing-page-searchbar uk-text-center uk-width-1-2@l uk-text-middle">
+      <form class="uk-width-1-1 uk-text-large" method="GET" action="/search">
+        {{- partial "searchbar.html" -}}
+        <button type="submit" class="uk-width-1-4@m uk-button uk-button-primary">
+          Search
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{{/* "About" section */}}
+<div class="bg-white uk-margin-top">
+  <div class="uk-container">
+    <br>
+    <h2 class="uk-heading-small">
+      <a class="anchor" id="about">About us</a>
+    </h2>
+
+    <p>
+      <span class="uk-text-lead">Encryption provides security and ensures user privacy on the internet.</span> However, encryption can also complicate law enforcement's job, making it difficult to investigate cybercrimes or obtain intelligence on issues related to national security. This frames the encryption policy debate as being user privacy set against national security. Often these debates lack input from different resources, and they happen over and over again with the same debate points being applied to an evolving technological landscape.
+    </p>
+
+    <p>
+      Our mission is to serve as central hub for policy makers, law practitioners, and the general public to understand the encryption debate. We have put together a comprehensive collection of research relating to the main themes of the encryption policy debate in the United States from 1970-2020.
+    </p>
+    <br>
+    <br><br>
+  </div>
+</div>
+
+<br>
+
+<div class="uk-container">
+  <h2>
+    Search the encryption literature for the following categories:
+  </h2>
+
+  <form id="tag_search_form" method="GET" action="{% url 'search' %}">
+    <div class="uk-width-8-10@m uk-text-break">
+      <div id="tag-buttons" class="uk-grid uk-grid-small" uk-grid="" data-uk-button-checkbox="">
+        {{/*
+        {% for tag in tags %}
+        <div>
+          <button type="button" id="tag-{{ tag.id }}" type="button" class="uk-button uk-button-default deselected-tag" onclick="toggle_tag({{ tag.id }})">
+            {{ tag.tagname }}
+          </button>
+        </div>
+        {% endfor %}
+        */}}
+      </div>
+
+      <button class="uk-margin-left uk-margin-top uk-button uk-button-secondary" type="button" name="tags" onclick="tag_search()">
+        Go <span uk-icon="icon: arrow-right"></span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="bg-white uk-margin-top">
+  <div class="uk-container">
+    <br>
+    <h2>
+      <a class="anchor" id="team">Team</a>
+    </h2>
+    <div class="uk-margin-top uk-grid-large uk-text-middle" uk-grid>
+      <div class="uk-width-1-2@l">
+        <b class="uk-text-emphasis">Silicon Flatirons Researcher Team</b>
+        <br>
+        <b class="uk-text-bold">Led by Amie Stepanovich, Silicon Flatirons Director</b>
+        <ul class="uk-list uk-list-bullet">
+          <li>
+            <span class="uk-text-bold">Shannon Brunston</span>
+            <br>
+            <small class="uk-text-small">TCP Program Student</small>
+          </li>
+          <li>
+            <span class="uk-text-bold">Slate Herman</span>
+            <br>
+            <small class="uk-text-small">2L Colorado Law</small>
+          </li>
+          <li>
+            <span class="uk-text-bold">Jordan Regenie</span>
+            <br>
+            <small class="uk-text-small">3L Colorado Law</small>
+          </li>
+          <li>
+            <span class="uk-text-bold">Stacey Weber</span>
+            <br>
+            <small class="uk-text-small">1L Colorado Law</small>
+          </li>
+      </ul>
+      </div>
+
+      <div class="uk-width-1-2@l">
+        <b class="uk-text-emphasis">TCP Web Development Team</b>
+        <br>
+        <b class="uk-text-bold">Led by Dr. Dan Massey, TCP Program Director</b>
+        <ul class="uk-list uk-list-bullet">
+          <li>
+            <span class="uk-text-bold">Will Shand</span>
+            <br>
+            <small class="uk-text-small">Applied Mathematics Program Student</small>
+          </li>
+          <li>
+            <span class="uk-text-bold">Pranav Gummaraj Srinivas</span>
+            <br>
+            <small class="uk-text-small">TCP Program Student</small>
+          </li>
+        </ul>
+      </div>
+
+  </div>
+  <br>
+</div>
+
+{{ end }}
