@@ -1,0 +1,4 @@
+[submodule "public"]
+	path = public
+	url = https://github.com/The-Encryption-Compendium/the-encryption-compendium.github.io.git
+	branch = master
