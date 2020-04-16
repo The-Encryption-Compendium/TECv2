@@ -31,8 +31,9 @@
     </div>
   </div>
 </div>
+{{ end }}
 
-{{ end }} {{ define "javascripts" }} {{ $js := resources.Get "js/search.js" |
-resources.Minify }}
+{{ define "javascripts" }}
+{{ $js := resources.Get "js/search.js" | resources.Minify }}
 <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
 {{ end }}

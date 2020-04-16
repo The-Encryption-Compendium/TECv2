@@ -12,3 +12,4 @@ repos:
     rev: "2.0.4"
     hooks:
       - id: prettier
+        files: .*\.js
