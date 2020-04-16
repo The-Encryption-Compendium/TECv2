@@ -1,7 +1,8 @@
 /*
  * Fuse.js config for fuzzy client-side search
  */
-const fuse_options = {
+
+const default_fuse_options = {
   isCaseSensitive: false,
   findAllMatches: false,
   includeMatches: false,
@@ -9,24 +10,26 @@ const fuse_options = {
   useExtendedSearch: false,
   minMatchCharLength: 1,
   shouldSort: true,
-  threshold: 0.6,
+  threshold: 0.3,
   location: 0,
   distance: 100,
-  keys: [
-    "title",
-    "abstract",
-    "authors",
-  ]
+  keys: ["title", "abstract", "authors"],
 };
-
-const fuse = new Fuse(entries, fuse_options);
 
 /*
  * Vue components for rendering the page
  */
 
+const _search_stats_template = `
+<div class="uk-width-1-2@m">
+  <h3>Found {{ n_results }} results</h3>
+</div>
+<div class="uk-width-1-2@m uk-text-right uk-text-small">
+  <span class="monospace uk-text-muted">Search finished in {{ qtime }}ms</span>
+</div>`;
+
 const _search_result_template = `
-<div>
+<div class="search_result">
   <h2 class="uk-h2 uk-text-bold">{{ title }}</h2>
   <div>
     <div><span class="uk-text-bold">Authors:</span> {{ authors }}</div>
@@ -36,12 +39,16 @@ const _search_result_template = `
     </p>
   </div>
   <hr>
-</div>
-`;
+</div>`;
+
+Vue.component("search-stats", {
+  props: ["n_results", "qtime"],
+  template: _search_stats_template,
+});
 
 Vue.component("search-result", {
   props: ["title", "published", "authors", "entry_id"],
-  template: _search_result_template
+  template: _search_result_template,
 });
 
 function generate_result_component(result) {
@@ -62,6 +69,15 @@ function generate_result_component(result) {
  * Primary search function
  */
 function search(pattern) {
+  // Delete any child elements of the search_results DOM element and add a
+  // new <search-stats></search-stats> element in its place.
+  const search_stats_container = document.getElementById("search_stats");
+  search_stats_container.childNodes.forEach((el) => el.remove());
+
+  // Perform the search with Fuse
+  const fuse_options = default_fuse_options;
+  const fuse = new Fuse(entries, fuse_options);
+
   const start_time = new Date();
   const results = fuse.search(pattern);
   const end_time = new Date();
@@ -70,29 +86,50 @@ function search(pattern) {
 
   /* Add a new element to the DOM for every search result that was
    * returned. */
-  for ( let ii = 0; ii < results.length; ++ii ) {
+  for (let ii = 0; ii < results.length; ++ii) {
     const el = generate_result_component(results[ii]);
     el.setAttribute("entry_id", ii);
     search_result_el.appendChild(el);
   }
 
-  /* Display all of the results */
+  // Add search statistics
+  const search_stats = document.createElement("search-stats");
+  search_stats.setAttribute("n_results", results.length);
+  search_stats.setAttribute("qtime", end_time.getTime() - start_time.getTime());
+  search_stats_container.appendChild(search_stats);
+
+  // Display all of the results
+  new Vue({
+    el: "#search_stats",
+  });
   new Vue({
     el: "#search_results",
-    delimiters: ["[[", "]]"],
-    data: {
-      n_results: results.length,
-      qtime: end_time.getTime() - start_time.getTime(),
-    }
   });
-  
+
   return results;
 }
 
-const query = new URLSearchParams(location.search).get("query");
-if ( query !== null ) {
-  search(query);
+/*
+ * Script to run on page load
+ */
+
+let query = new URLSearchParams(location.search).get("query");
+if (query === null) {
+  query = "";
 }
-else {
-  search("");
-}
+search(query);
+
+// Pre-populate the search field with the last query
+document.getElementById("id_query").value = query;
+
+// Re-run search whenever something new is put into the search bar
+document.getElementById("id_query").onkeyup = function (e) {
+  input = document.getElementById("id_query").value;
+  console.log(input);
+
+  // Remove all search results that are currently displayed
+  document.querySelectorAll(".search_result").forEach((el) => el.remove());
+
+  // Re-run search with new input
+  search(input);
+};
