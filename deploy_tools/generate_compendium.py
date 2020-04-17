@@ -18,8 +18,12 @@ Global variables
 """
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
-ENTRIES_SCRIPT = os.path.join(BASE_DIR, "assets", "js", "entries.js")
-MARKDOWN_ENTRIES_DIRECTORY = os.path.join(BASE_DIR, "content", "entries")
+ENTRIES_SCRIPT = os.path.relpath(
+    os.path.join(BASE_DIR, "assets", "js", "entries.js"), os.getcwd()
+)
+MARKDOWN_ENTRIES_DIRECTORY = os.path.relpath(
+    os.path.join(BASE_DIR, "content", "entries"), os.getcwd()
+)
 
 """
 Helper functions
