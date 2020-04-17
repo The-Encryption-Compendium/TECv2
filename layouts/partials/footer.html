@@ -6,43 +6,52 @@ A site-wide footer with credits, contact information, etc.
   <div class="uk-container uk-margin-top uk-margin-bottom">
     <div class="uk-grid-divider" uk-grid="">
 
-      {{/* First column */}}
-      <div class="uk-width-1-3@m">
-        The Encryption Compendium is sponsored by
-        <a class="uk-link" href="https://siliconflatirons.org">Silicon Flatirons</a>,
-        <a class="uk-link" href="https://colorado.edu">the University of Colorado Boulder</a>, and
-        <a class="uk-link" href="https://facebook.com">Facebook</a>.
+      {{/* First column (acknowledgments) */}}
+      <div class="uk-width-1-2@m acknowledgments">
+        The Encryption Compendium is a project of the
+        <a href="https://siliconflatirons.org/">
+          Silicon Flatirons Center for Law, Technology, and Entrepreneurship
+        </a>
+        at Colorado Law and the
+        <a href="https://www.colorado.edu/program/tcp/">
+          Technology, Cybersecurity, and Policy Center
+        </a>
+        at the CU Boulder College of Engineering and Applied Science. The project is made possible by
+        <a href="https://facebook.com">Facebook</a>.
       </div>
 
-      {{/* Second column */}}
-      <div class="uk-width-1-3@m">
-        <ul class="uk-list">
-          <li>
-            <a class="uk-link" href="#">About</a>
-          </li>
-          <li>
-            <a class="uk-link" href="#">Contact us</a>
-          </li>
-          <li>
-            <a class="uk-link" href="#">Team</a>
-          </li>
-        </ul>
-      </div>
+      {{/* Second column (additional resources) */}}
+      <div class="uk-width-1-2@m">
+        <div class="uk-child-width-1-2@m" uk-grid="">
+          <div>
+            <ul class="uk-list">
+              <li>
+                <a class="uk-link" href="#">About</a>
+              </li>
+              <li>
+                <a class="uk-link" href="#">Contact us</a>
+              </li>
+              <li>
+                <a class="uk-link" href="#">Team</a>
+              </li>
+            </ul>
+          </div>
 
-      {{/* Third column */}}
-      <div class="uk-width-1-3@m">
-        <ul class="uk-list">
-          <li>
-            <a class="uk-link" href="https://github.com/The-Encryption-Compendium/the-encryption-compendium">
-              <span uk-icon="icon: github"></span> GitHub
-            </a>
-          </li>
-          <li>
-            <a class="uk-link" href="https://twitter.com/SiliconFlatiron">
-              <span uk-icon="icon: twitter"></span> Twitter
-            </a>
-          </li>
-        </ul>
+          <div>
+            <ul class="uk-list">
+              <li>
+                <a class="uk-link" href="https://github.com/The-Encryption-Compendium/the-encryption-compendium">
+                  <span uk-icon="icon: github"></span> GitHub
+                </a>
+              </li>
+              <li>
+                <a class="uk-link" href="https://twitter.com/SiliconFlatiron">
+                  <span uk-icon="icon: twitter"></span> Twitter
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
     </div>
