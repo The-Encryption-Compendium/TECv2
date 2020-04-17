@@ -39,16 +39,20 @@ A site-wide footer with credits, contact information, etc.
 
           <div>
             <ul class="uk-list">
+              {{ if .Site.Params.Github }}
               <li>
-                <a class="uk-link" href="https://github.com/The-Encryption-Compendium/the-encryption-compendium">
+                <a target="_blank" class="uk-link" href="{{ .Site.Params.GitHub }}">
                   <span uk-icon="icon: github"></span> GitHub
                 </a>
+              {{ end }}
               </li>
+              {{ if .Site.Params.Twitter }}
               <li>
-                <a class="uk-link" href="https://twitter.com/SiliconFlatiron">
+                <a target="_blank" class="uk-link" href="{{ .Site.Params.Twitter }}">
                   <span uk-icon="icon: twitter"></span> Twitter
                 </a>
               </li>
+              {{ end }}
             </ul>
           </div>
         </div>
