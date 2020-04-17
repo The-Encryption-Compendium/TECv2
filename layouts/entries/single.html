@@ -9,8 +9,3 @@
   </div>
 </div>
 {{ end }}
-
-{{ define "javascripts" }}
-{{- $js := resources.Get "js/entry_view.js" | resources.Minify -}}
-<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
-{{ end }}

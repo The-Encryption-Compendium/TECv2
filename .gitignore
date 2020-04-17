@@ -2,5 +2,6 @@
 public/
 resources/
 
-# Emacs files
-*~
+# Python virtual environments
+virtualenv
+venv

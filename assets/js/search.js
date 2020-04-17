@@ -37,7 +37,7 @@ const _search_result_template = `
     <div><span class="uk-text-bold">Authors:</span> {{ authors }}</div>
     <div><span class="uk-text-bold">Published:</span> {{ published }}</div>
     <p>
-      <a v-bind:href="'/entries/?id=' + entry_id">See more</a>
+      <a v-bind:href="'/entries/' + id">See more</a>
     </p>
   </div>
   <hr>
@@ -49,7 +49,7 @@ Vue.component("search-stats", {
 });
 
 Vue.component("search-result", {
-  props: ["title", "published", "authors", "entry_id"],
+  props: ["title", "published", "authors", "id"],
   template: _search_result_template,
 });
 
@@ -63,6 +63,7 @@ function generate_result_component(result) {
   el.setAttribute("title", item.title);
   el.setAttribute("published", get_publication_date(item));
   el.setAttribute("authors", get_authors(item));
+  el.setAttribute("id", item.id);
 
   return el;
 }
@@ -90,7 +91,6 @@ function search(pattern) {
    * returned. */
   for (let ii = 0; ii < results.length; ++ii) {
     const el = generate_result_component(results[ii]);
-    el.setAttribute("entry_id", ii);
     search_result_el.appendChild(el);
   }
 
