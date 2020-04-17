@@ -47,7 +47,7 @@ jobs:
           python -m deploy_tools.generate_compendium data/data.bib
           mkdir public
           hugo --minify
-          cp -r deploy_tools/additional_files/ public/
+          cp -r deploy_tools/additional_files/* public/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
