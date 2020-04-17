@@ -1,0 +1,17 @@
+{{/* Generic template for a button on the site */}}
+
+<button
+  {{ if .Get "class" }}
+    class="uk-button {{ .Get "class" }}"
+  {{ else }}
+    class="uk-button uk-button-primary"
+  {{ end }}
+  {{ if .Get "onclick" }} onclick="{{ .Get "onclick" }}" {{ end }}
+  {{ if .Get "name" }} name="{{ .Get "name" }}" {{ end }}
+  {{ if .Get "type" }}
+    type="button"
+  {{ end }}
+>
+  {{ .Inner }}
+  {{ if .Get "icon" }}<span uk-icon="icon: {{ .Get "icon" }}"></span>{{ end }}
+</button>

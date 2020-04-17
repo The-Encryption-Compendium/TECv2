@@ -1,0 +1,19 @@
+{{/* A column of text to put in a grid */}}
+
+<div>
+  {{ if .Get "title" }}
+  <span class="uk-text-large uk-text-emphasis">{{ .Get "title" }}</span>
+  {{ end }}
+
+  {{ if and (.Get "title") (.Get "subtitle") }}
+  <br>
+  {{ end }}
+
+  {{ if .Get "subtitle" }}
+  <span>{{ .Get "subtitle" }}</span>
+  {{ end }}
+
+  <div class="researcher-list uk-margin-top">
+    {{ .Inner }}
+  </div>
+</div>

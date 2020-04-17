@@ -1,0 +1,20 @@
+{{/* A shortcode for creating a white background div behind some content */}}
+<div {{ if .Get "class" }}class="{{ .Get "class" }}"{{ end }}>
+  <div class="uk-container uk-padding-large">
+
+    {{ if .Get "section-header" }}
+      <h2 class="uk-heading-small">
+        {{ if .Get "section-header-id" }}
+        <a class="anchor" id="{{ .Get "section-header-id" }}">
+          {{ .Get "section-header" }}
+        </a>
+        {{ else }}
+        {{ .Get "section-header" }}
+        {{ end }}
+      </h2>
+    {{ end }}
+
+    {{ .Inner }}
+
+  </div>
+</div>
