@@ -40,7 +40,6 @@
 {{ end }}
 
 {{ define "javascripts" }}
-<script type="text/javascript" src="{{ "js/particles.min.js" | relURL }}"></script>
 {{ $js := resources.Get "js/landing_page.js" | resources.Minify }}
 <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
 {{ end }}

@@ -17,16 +17,28 @@
     Javascript imports
     */}}
 
-    <script type="text/javascript" src="{{ "js/jquery-3.4.1.min.js" | relURL }}"></script>
-    <script type="text/javascript" src="{{ "js/uikit.min.js" | relURL }}"></script>
-    <script type="text/javascript" src="{{ "js/uikit-icons.min.js" | relURL }}"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+    {{/* Vendor JS */}}
 
-    {{ $js := resources.Get "js/entries.js" | resources.Minify }}
-    <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+    {{ range $js := slice "jquery-3.5.0.min.js" "uikit.min.js" "uikit-icons.min.js" "fuse.js" "particles.js" }}
+      {{ $js := printf "js/vendor/%s" $js }}
+      {{ $js := resources.Get $js | resources.Fingerprint "sha256" }}
+      <script
+        type="text/javascript"
+        src="{{ $js.RelPermalink }}"
+        integrity="{{ $js.Data.Integrity }}">
+      </script>
+    {{ end }}
 
-    {{ $js := resources.Get "js/utils.js" | resources.Minify }}
-    <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+    {{/* Custom JS */}}
+
+    {{ range $js := slice "entries.js" "utils.js" }}
+      {{ $js := printf "js/%s" $js | resources.Get | resources.Minify | resources.Fingerprint "sha256" }}
+      <script
+        type="text/javascript"
+        src="{{ $js.RelPermalink }}"
+        integrity="{{ $js.Data.Integrity }}">
+      </script>
+    {{ end }}
 
     {{ block "javascripts" . }}
     {{ end }}
