@@ -1,0 +1,5 @@
+# Ignore all of the files that are automatically downloaded to this directory
+# during the build process.
+
+*
+!.gitignore

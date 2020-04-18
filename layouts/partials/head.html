@@ -6,21 +6,25 @@
 
   <title>{{ .Site.Title }}</title>
 
-  {{ $style := resources.Get "css/uikit.min.css" }}
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="{{ $style.RelPermalink }}">
+  {{/* UIkit styling */}}
+
+  {{ range (readDir "static/css") }}
+    {{ $path := printf "static/css/%s" .Name }}
+    {{ if eq (path.Ext $path) ".css" }}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ printf "css/%s" .Name }}">
+    {{ end }}
+  {{ end }}
 
   {{ $cssTarget := "css/style.css" }}
   {{ $cssOptions := (dict "targetPath" $cssTarget "enableSourceMap" true "outputStyle" "compressed") }}
   {{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "tec.style.scss" . | toCSS $cssOptions }}
-  {{ $style := $style | fingerprint }}
   <link
     rel="stylesheet"
     type="text/css"
-    href="{{ $style.RelPermalink }}"
-    integrity="{{ $style.Data.Integrity }}">
+    href="{{ $style.RelPermalink }}">
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>

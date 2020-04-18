@@ -1,18 +1,20 @@
 name: GitHub Pages
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
         python-version: [3.8]
 
     steps:
+
+      ############################################################################
+      # Build the site using Hugo and ensure that it's working correctly.
+      ############################################################################
+
       - uses: actions/checkout@v2
         with:
           submodules: true  # Fetch Hugo themes
@@ -44,13 +46,19 @@ jobs:
 
       - name: Build
         run: |
+          python -m deploy_tools.get_dependencies
           python -m deploy_tools.generate_compendium data/data.bib
-          mkdir public
+          mkdir -p public
           hugo --minify
           cp -r deploy_tools/additional_files/* public/
 
+      ############################################################################
+      # Deploy the site to GitHub pages. Only triggered by pushes to master.
+      ############################################################################
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'master'
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: The-Encryption-Compendium/the-encryption-compendium.github.io

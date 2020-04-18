@@ -1,0 +1,5 @@
+# Ignore fonts that are automatically downloaded to this directory
+# via the build scripts
+
+*
+!.gitignore

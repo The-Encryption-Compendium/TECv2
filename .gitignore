@@ -1,6 +1,9 @@
-# Hugo generated files
+# Files generated during the build process
 public/
 resources/
+*.log
+*.log.*
+deploy_tools/_cache
 
 # Python virtual environments
 virtualenv
