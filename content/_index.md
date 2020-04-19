@@ -46,8 +46,8 @@ draft = false
     title="Silicon Flatirons Research Team"
     subtitle="Led by Amie Stepanovich, Silicon Flatirons Director" %}}
   - [Shannon Brunston](https://www.linkedin.com/in/shannonbrunston/)
-  - Slate Herman
-  - Jordan Regenie
+  - [Slate Herman](https://www.linkedin.com/in/slateherman/)
+  - [Jordan Regenie](https://www.linkedin.com/in/jordan-regenie-2563a62a/)
   - [Stacey Weber](http://www.linkedin.com/in/staceyweber06)
   {{% /landing-page/team %}}
   {{% landing-page/team
