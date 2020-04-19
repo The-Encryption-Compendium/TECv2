@@ -74,7 +74,7 @@ function generate_result_component(entry) {
 function filter_by_tags(tags, entries) {
   // Filter in only entries that have the provided tags
   return entries.filter((entry) =>
-    tags.every((tag) => "tags" in entry && entry.tags.includes(tag))
+    tags.some((tag) => "tags" in entry && entry.tags.includes(tag))
   );
 }
 
