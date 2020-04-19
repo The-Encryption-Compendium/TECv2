@@ -1,5 +1,0 @@
-# Ignore the vendor files that are automatically placed here during
-# the build process.
-
-*
-!.gitignore
