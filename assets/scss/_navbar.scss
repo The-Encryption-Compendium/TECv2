@@ -1,0 +1,19 @@
+/****************************
+ * Navbar styling
+ ****************************/
+
+.site-navbar {
+  background-color: $dark !important;
+}
+
+@media screen and (min-width: $width-medium) {
+  .navbar-menu-toggle {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: $width-medium) {
+  .navbar-menu-list {
+    display: none !important;
+  }
+}

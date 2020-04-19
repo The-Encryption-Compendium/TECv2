@@ -44,6 +44,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r deploy_tools/requirements.txt
 
+      - name: Download compendium entries
+        run: python -m deploy_tools.scrape_zotero "${{ secrets.API_KEY }}"
+
       - name: Build
         run: |
           python -m deploy_tools.get_dependencies
@@ -51,6 +54,14 @@ jobs:
           mkdir -p public
           hugo --minify
           cp -r deploy_tools/additional_files/* public/
+
+
+      ############################################################################
+      # Run tests
+      ############################################################################
+
+      - name: Pre-commit hook check
+        run: pre-commit install && pre-commit run --all-files
 
       ############################################################################
       # Deploy the site to GitHub pages. Only triggered by pushes to master.
