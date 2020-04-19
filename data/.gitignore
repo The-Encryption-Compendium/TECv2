@@ -1,0 +1,4 @@
+# Don't commit the data that's pulled from Zotero
+
+*
+!.gitignore
