@@ -41,21 +41,34 @@ draft = false
   section-header="Team"
   section-header-id="team" >}}
 
-<div class="uk-flex uk-flex-center uk-child-width-1-2@m uk-margin-top uk-grid-large uk-text-middle" uk-grid>
-{{% landing-page/team
-  title="Silicon Flatirons Research Team"
-  subtitle="Led by Amie Stepanovich, Silicon Flatirons Director" %}}
-- [Shannon Brunston](https://www.linkedin.com/in/shannonbrunston/)
-- Slate Herman
-- Jordan Regenie
-- Stacey Weber
-{{% /landing-page/team %}}
-{{% landing-page/team
-  title="TCP Web Development Team"
-  subtitle="Led by Dr. Dan Massey, TCP Program Director" %}}
-- [Will Shand](https://kernelmethod.dev)
-- Pranav Gummaraj Srinivas
-{{% /landing-page/team %}}
+<div class="uk-child-width-1-2@m uk-margin-top uk-grid-large uk-text-middle" uk-grid>
+  {{% landing-page/team
+    title="Silicon Flatirons Research Team"
+    subtitle="Led by Amie Stepanovich, Silicon Flatirons Director" %}}
+  - [Shannon Brunston](https://www.linkedin.com/in/shannonbrunston/)
+  - Slate Herman
+  - Jordan Regenie
+  - [Stacey Weber](http://www.linkedin.com/in/staceyweber06)
+  {{% /landing-page/team %}}
+  {{% landing-page/team
+    title="TCP Web Development Team"
+    subtitle="Led by Dr. Dan Massey, TCP Program Director" %}}
+  - [Will Shand](https://kernelmethod.dev)
+  - [Pranav Gummaraj Srinivas](http://linkedin.com/in/pranav-gs)
+  {{% /landing-page/team %}}
+
+  <div class="uk-margin-remove-top uk-flex uk-flex-middle">
+    <img
+      src="/img/silicon_flatirons_logo.gif"
+      alt="Silicon Flatirons logo">
+  </div>
+
+  <div class="uk-margin-remove-top uk-flex uk-flex-middle">
+    <img
+      src="/img/tcp_logo.png"
+      alt="TCP Program logo">
+  </div>
+
 </div>
 
 {{< /section >}}

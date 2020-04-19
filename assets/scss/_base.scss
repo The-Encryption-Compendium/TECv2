@@ -109,16 +109,16 @@ a.anchor:hover {
  * Animations
  ****************************/
 
-.particles-wrapper {
+.landing-page-background {
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
   position: fixed;
   z-index: -1;
-  background-image: url("");
+  background-image: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url("/img/landing_page_background_img.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  background-color: #e8e8e8;
+  opacity: 0.5;
 }
