@@ -1,3 +1,7 @@
+/*
+ * Functions for tag search
+ */
+
 function toggle_tag(tag_id) {
   // Deselect the active element so that it can change color
   document.activeElement.blur();
@@ -16,11 +20,11 @@ function tag_search() {
 
   const tags = [];
   for (let ii = 0; ii < selected.length; ++ii) {
-    const id = selected[ii].id.replace("tag-", "");
-    tags.push(id);
+    const tagname = selected[ii].getAttribute("name");
+    tags.push(tagname);
   }
 
-  const url = "/search?tags=" + encodeURI(tags.join(","));
+  const url = "/search?tags=" + encodeURIComponent(JSON.stringify(tags));
   window.location.replace(url);
 }
 

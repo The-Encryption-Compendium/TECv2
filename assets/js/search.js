@@ -53,36 +53,57 @@ Vue.component("search-result", {
   template: _search_result_template,
 });
 
-function generate_result_component(result) {
+function generate_result_component(entry) {
   /* Return a new search-result Vue component based on a search result
    * found using Fuse.js. */
-  const item = result.item;
   const el = document.createElement("search-result");
 
   // Entry title
-  el.setAttribute("title", item.title);
-  el.setAttribute("published", get_publication_date(item));
-  el.setAttribute("authors", get_authors(item));
-  el.setAttribute("id", item.id);
+  el.setAttribute("title", entry.title);
+  el.setAttribute("published", get_publication_date(entry));
+  el.setAttribute("authors", get_authors(entry));
+  el.setAttribute("id", entry.id);
 
   return el;
 }
 
 /*
- * Primary search function
+ * Search filters
  */
-function search(pattern) {
+
+function filter_by_tags(tags, entries) {
+  // Filter in only entries that have the provided tags
+  return entries.filter((entry) =>
+    tags.every((tag) => "tags" in entry && entry.tags.includes(tag))
+  );
+}
+
+function filter_by_text(text, entries) {
+  // Filter in only entries that match a fuzzy text search.
+  // When text == "" the default behavior is to filter in every single
+  // entry in the compendium.
+
+  if (text.length === 0) {
+    return entries;
+  }
+
+  const fuse = new Fuse(entries, default_fuse_options);
+  const results = fuse.search(text);
+  return results.map((res) => res.item);
+}
+
+function search(text, tags, entries) {
+  // Primary search runner
+
   // Delete any child elements of the search_results DOM element and add a
   // new <search-stats></search-stats> element in its place.
+
   const search_stats_container = document.getElementById("search_stats");
   search_stats_container.childNodes.forEach((el) => el.remove());
 
-  // Perform the search with Fuse
-  const fuse_options = default_fuse_options;
-  const fuse = new Fuse(entries, fuse_options);
-
   const start_time = new Date();
-  const results = fuse.search(pattern);
+  let results = filter_by_tags(tags, entries);
+  results = filter_by_text(text, results);
   const end_time = new Date();
 
   const search_result_el = document.getElementById("search_results");
@@ -118,8 +139,18 @@ function search(pattern) {
 let query = new URLSearchParams(location.search).get("query");
 if (query === null) {
   query = "";
+} else {
+  query = decodeURIComponent(query);
 }
-search(query);
+
+let tags = new URLSearchParams(location.search).get("tags");
+if (tags === null) {
+  tags = [];
+} else {
+  tags = JSON.parse(decodeURIComponent(tags));
+}
+
+search(query, tags, entries);
 
 // Pre-populate the search field with the last query
 document.getElementById("id_query").value = query;
@@ -133,5 +164,5 @@ document.getElementById("id_query").onkeyup = function (e) {
   document.querySelectorAll(".search_result").forEach((el) => el.remove());
 
   // Re-run search with new input
-  search(input);
+  search(input, tags, entries);
 };

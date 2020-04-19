@@ -5,6 +5,8 @@ type = "landing page"
 draft = false
 +++
 
+<!-- About -->
+
 {{< section
   class="bg-white uk-margin-top"
   section-header="About us"
@@ -23,26 +25,16 @@ draft = false
 
 {{< /section >}}
 
+<!-- Tag search -->
 {{< section >}}
 {{% text-lead %}}
 **Search the encryption literature for the following categories:**
 {{% /text-lead %}}
 
-  <form id="tag_search_form" method="GET" action="{% url 'search' %}">
-    <div class="uk-width-8-10@m uk-text-break">
-      <div id="tag-buttons" class="uk-grid uk-grid-small" uk-grid="" data-uk-button-checkbox="">
-      </div>
-
-      {{< button
-          class="uk-margin-left uk-margin-top uk-button-secondary"
-          onclick="tag_search()"
-          icon="arrow-right" >}}
-        Go
-      {{< /button >}}
-
-    </div>
-  </form>
+{{< landing-page/taglist >}}
 {{< /section >}}
+
+<!-- Team -->
 
 {{< section
   class="bg-white"

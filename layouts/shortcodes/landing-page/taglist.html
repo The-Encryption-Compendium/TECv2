@@ -1,0 +1,38 @@
+{{/* Shows a list of the top N tags and */}}
+
+{{ .Scratch.Set "N" 40 }}
+{{ if (.Get "N") }}
+  {{ .Scratch.Set "N" (.Get "N") }}
+{{ end }}
+
+<form id="tag_search_form" method="GET" action="/search">
+  <div class="uk-width-8-10@m uk-text-break">
+    <div id="tag-buttons" class="uk-grid uk-grid-small" uk-grid="" data-uk-button-checkbox="">
+      {{ range $index, $el := first (.Scratch.Get "N") $.Site.Taxonomies.tags.ByCount }}
+      <div>
+        <button
+          type="button"
+          name="{{ $el.Page.Title }}"
+          id="tag-{{ $index }}"
+          type="button"
+          class="uk-button uk-button-default deselected-tag"
+          onclick="toggle_tag({{ $index }})">
+          {{ $el.Page.Title }}
+        </button>
+      </div>
+      {{ end }}
+    </div>
+
+    <div class="uk-width-1-4@m uk-margin-top uk-margin-left">
+      <button class="uk-button uk-button-secondary uk-width-1-1" type="button" name="tags" onclick="tag_search()">
+        Go <span uk-icon="icon: arrow-right"></span>
+      </button>
+
+      <a href="/tags">
+        <button class="uk-margin-small-top uk-button uk-button-secondary uk-width-1-1" type="button">
+          View the full list of tags <span uk-icon="icon: tag"></span>
+        </button>
+      </a>
+    </div>
+  </div>
+</form>
