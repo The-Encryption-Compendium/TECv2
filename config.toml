@@ -8,3 +8,6 @@ resourceDir = "./resources"
     description = "The encryption literature database"
     github = "https://github.com/The-Encryption-Compendium/TECv2"
     # twitter = ""
+
+[taxonomies]
+    tag = "tags"

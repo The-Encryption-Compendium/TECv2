@@ -1,0 +1,11 @@
+{{ define "main" }}
+
+<ul class="uk-list">
+  {{ range .Data.Pages }}
+  <li>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  </li>
+  {{ end }}
+</ul>
+
+{{ end }}

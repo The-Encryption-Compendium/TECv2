@@ -1,0 +1,63 @@
+{{/* List all of the tags for entries on the site */}}
+
+{{ define "main" }}
+
+<div class="uk-container">
+  <div class="uk-margin-top">
+    <h1 class="uk-h1">
+      Compendium tags
+    </h1>
+
+    <hr>
+
+    <div class="uk-container uk-margin-bottom">
+      <h3>Seeing {{ len .Data.Terms }} tags</h3>
+
+      <div class="uk-padding">
+        <label for="sort_tags_by">Sort tags:</label>
+        <select id="sort_tags_by" onchange="select_tag_sorting_scheme()">
+          <option select="selected" value="alpha">Alphabetically</option>
+          <option value="by_num">By number of entries</option>
+        </select>
+      </div>
+
+      <div id="sorted_alphabetically">
+        <ul class="uk-list uk-list-bullet">
+          {{ range .Data.Terms.Alphabetical }}
+          <li class="uk-text-large"><a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a> {{ .Count }}</li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <div id="sorted_by_number" class="">
+        <ul class="uk-list uk-list-bullet">
+          {{ range .Data.Terms.ByCount }}
+          <li class="uk-text-lead"><a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a> {{ .Count }}</li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ end }}
+
+{{ define "javascripts" }}
+<script>
+  function select_tag_sorting_scheme() {
+    const select = document.getElementById("sort_tags_by");
+    const alpha_entries = document.getElementById("sorted_alphabetically");
+    const num_entries = document.getElementById("sorted_by_number");
+    if ( select.options[select.selectedIndex].value == "alpha" ) {
+      num_entries.classList.add("uk-hidden");
+      alpha_entries.classList.remove("uk-hidden");
+    }
+    else {
+      alpha_entries.classList.add("uk-hidden");
+      num_entries.classList.remove("uk-hidden");
+    }
+  }
+
+  select_tag_sorting_scheme();
+</script>
+{{ end }}

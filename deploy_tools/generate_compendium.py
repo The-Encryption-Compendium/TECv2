@@ -129,7 +129,13 @@ def generate_page_for_entry(entry: dict):
     fields = []
 
     # Title
-    fields.append(f"# {entry['title']}")
+    # - Sometimes the titles contain weird character strings like
+    #   "\&", which we have to fix so that they're rendered as intended.
+    # - The title is expected to be wrapped in quotes, so we have to
+    #   replace occurrences of " with \".
+    title = entry["title"]
+    title = title.replace("\\", "\\\\")
+    title = title.replace('"', '\\"')
 
     # Authors
     authors = entry.get("authors")
@@ -169,6 +175,8 @@ def generate_page_for_entry(entry: dict):
     page = f"""\
 +++
 draft = false
+title = "{title}"
+tags = {entry.get('tags',[])}
 +++
 {fields}
 """
