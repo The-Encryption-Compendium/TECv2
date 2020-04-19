@@ -14,4 +14,9 @@
 
 @import "variables";
 @import "base";
+
+/*
+ * Add some additional SCSS for logical elements of the site
+ */
+@import "navbar.scss";
 @import "footer.scss";

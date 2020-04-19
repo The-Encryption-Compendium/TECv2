@@ -2,5 +2,26 @@
  * Font-related options
  */
 
+// Font families
 $site-font: "Roboto", Arial, sans-serif;
 $title-font: "Nobile", Roboto, Arial, sans-serif;
+
+// Font colors
+$font-dark: #333;
+$font-light: #666;
+
+/*
+ * General colors
+ */
+
+$dark: #222;
+
+/*
+ * Screen widths
+ */
+
+// These widths match the UIkit widths that you get from @s, @m, etc.
+// from UIkit
+$width-small: 640px;
+$width-medium: 900px;
+$width-large: 1200px;
