@@ -58,6 +58,13 @@ jobs:
           hugo --minify
           cp -r deploy_tools/additional_files/* public/
 
+      - name: Add Zotero data
+        run: |
+          mkdir -p public/data/
+          cp data/*.bib public/data/
+
+      - name: Log the public/ directory structure
+        run: find public/ -type f
 
       ############################################################################
       # Run tests
