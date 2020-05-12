@@ -24,18 +24,6 @@
     "license": ["LICENSE.md"]
   },
   {
-    "name": "Particles.js",
-    "version": "2.0.0",
-    "url": "https://cdn.jsdelivr.net/npm/particles.js@{{ version }}/particles.js",
-    "checksum": "89c8e085c3da89b31fd63bf88102068b931e58d1de9b64a2b29728ac28827d28",
-    "files": ["particles.js"]
-  },
-  {
-    "name": "Particles.js",
-    "url": "https://raw.githubusercontent.com/VincentGarreau/particles.js/master/LICENSE.md",
-    "license": ["LICENSE.md"]
-  },
-  {
     "name": "Fuse.js",
     "version": "5.1.0",
     "url": "https://unpkg.com/fuse.js@{{ version }}/dist/fuse.js",

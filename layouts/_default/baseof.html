@@ -19,7 +19,7 @@
 
     {{/* Vendor JS */}}
 
-    {{ range $js := slice "jquery-3.5.0.min.js" "uikit.min.js" "uikit-icons.min.js" "fuse.js" "particles.js" }}
+    {{ range $js := slice "jquery-3.5.0.min.js" "uikit.min.js" "uikit-icons.min.js" "fuse.js" }}
       {{ $js := printf "js/vendor/%s" $js }}
       {{ $js := resources.Get $js | resources.Fingerprint "sha256" }}
       <script
