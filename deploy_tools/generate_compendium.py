@@ -109,7 +109,11 @@ def _extract_authors(entry):
     authors = entry.get("author")
     if authors is not None:
         patt = re.compile(r"\{([^\}]+)\}")
-        authors = patt.findall(authors)
+        matches = patt.findall(authors)
+        if len(matches) > 0:
+            authors = matches
+        else:
+            authors = [authors]
     else:
         authors = []
     return authors
@@ -139,7 +143,7 @@ def generate_page_for_entry(entry: dict):
 
     # Authors
     authors = entry.get("authors")
-    if len(authors) > 0:
+    if authors and len(authors) > 0:
         authors = f"**Authors**: {', '.join(authors)}"
     else:
         authors = None
