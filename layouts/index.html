@@ -26,9 +26,18 @@
     <div class="landing-page-searchbar uk-text-center uk-width-1-2@l uk-text-middle">
       <form class="uk-width-1-1 uk-text-large" method="GET" action="/search">
         {{- partial "searchbar.html" -}}
-        <button type="submit" class="uk-margin-top uk-width-1-4@m uk-button uk-button-primary">
-          Search
-        </button>
+        <div class="uk-width-1-1">
+          <button type="submit" class="uk-margin-top uk-width-1-2@m uk-button uk-button-primary">
+            Search
+          </button>
+        </div>
+        <div class="uk-width-1-1">
+          <a href="/search">
+            <button type="button" class="uk-margin-small-top uk-width-1-2@m uk-button uk-button-secondary">
+              View the full compendium
+            </button>
+          </a>
+        </div>
       </form>
     </div>
 
