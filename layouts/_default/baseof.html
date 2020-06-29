@@ -19,26 +19,27 @@
 
     {{/* Vendor JS */}}
 
-    {{ range $js := slice "jquery-3.5.0.min.js" "uikit.min.js" "uikit-icons.min.js" "fuse.js" }}
-      {{ $js := printf "js/vendor/%s" $js }}
-      {{ $js := resources.Get $js | resources.Fingerprint "sha256" }}
-      <script
-        type="text/javascript"
-        src="{{ $js.RelPermalink }}"
-        integrity="{{ $js.Data.Integrity }}">
-      </script>
-    {{ end }}
+    {{ $jquery := resources.Get "js/vendor/jquery-3.5.0.min.js" }}
+    {{ $uikit := resources.Get "js/vendor/uikit.min.js" }}
+    {{ $uikit_icons := resources.Get "js/vendor/uikit-icons.min.js" }}
+    {{ $fuse := resources.Get "js/vendor/fuse.js" }}
+    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse | resources.Concat "js/vendor.js" | resources.Fingerprint "sha256" }}
+    <script
+      type="text/javascript"
+      src="{{ $vendor_js.RelPermalink }}"
+      integrity="{{ $vendor_js.Data.Integrity }}">
+    </script>
 
     {{/* Custom JS */}}
 
-    {{ range $js := slice "entries.js" "utils.js" }}
-      {{ $js := printf "js/%s" $js | resources.Get | resources.Minify | resources.Fingerprint "sha256" }}
-      <script
-        type="text/javascript"
-        src="{{ $js.RelPermalink }}"
-        integrity="{{ $js.Data.Integrity }}">
-      </script>
-    {{ end }}
+    {{ $entries := resources.Get "js/entries.js" | resources.Minify }}
+    {{ $utils := resources.Get "js/utils.js" | resources.Minify }}
+    {{ $site_js := slice $entries $utils | resources.Concat "js/site.js" | resources.Fingerprint "sha256" }}
+    <script
+      type="text/javascript"
+      src="{{ $site_js.RelPermalink }}"
+      integrity="{{ $site_js.Data.Integirty }}">
+    </script>
 
     {{ block "javascripts" . }}
     {{ end }}
