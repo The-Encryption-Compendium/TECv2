@@ -23,7 +23,8 @@
     {{ $uikit := resources.Get "js/vendor/uikit.min.js" }}
     {{ $uikit_icons := resources.Get "js/vendor/uikit-icons.min.js" }}
     {{ $fuse := resources.Get "js/vendor/fuse.js" }}
-    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse | resources.Concat "js/vendor.js" | resources.Fingerprint "sha256" }}
+    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse | resources.Concat "js/vendor.js" }}
+    {{ $vendor_js := resources.Minify $vendor_js | resources.Fingerprint "sha256" }}
     <script
       type="text/javascript"
       src="{{ $vendor_js.RelPermalink }}"
