@@ -5,11 +5,6 @@ resources/
 *.log.*
 deploy_tools/_cache
 
-assets/js/vendor/*
-static/css/*
-static/fonts/*
-!*.gitkeep
-
 # Python virtual environments
 virtualenv
 venv

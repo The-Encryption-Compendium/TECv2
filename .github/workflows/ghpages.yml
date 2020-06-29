@@ -52,7 +52,6 @@ jobs:
 
       - name: Build
         run: |
-          python -m deploy_tools.get_dependencies
           python -m deploy_tools.generate_compendium data/data.bib
           mkdir -p public
           hugo --minify

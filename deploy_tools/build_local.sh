@@ -15,7 +15,6 @@ wget https://raw.githubusercontent.com/The-Encryption-Compendium/the-encryption-
 python3 -m venv "${VENV_DIR}"
 source "${VENV_DIR}/bin/activate"
 python3 -m pip install -r "${CURRENT_DIR}/requirements.txt"
-python3 "${CURRENT_DIR}/get_dependencies.py"
 
 # Generate compendium entry files from data.bib
 python3 "${CURRENT_DIR}/generate_compendium.py" "${CURRENT_DIR}/../data/data.bib"

@@ -7,10 +7,9 @@ TECv2 is a static site created using [Hugo](https://gohugo.io). The [original ve
 This repository primarily contains various scripts, templates, and JS/CSS files. However, to get the site up and running, it must first be built using Hugo. Here is an overview of how the site is built (using [GitHub actions](.github/workflows/ghpages.yml)) whenever a new commit is pushed to `master`:
 
 1. Compendium entries are downloaded from Zotero using the `deploy_tools/scrape_zotero.py` script and an API key for the research team's Zotero. There are stored in a BibTeX file, `data/data.bib`.
-2. Various external dependencies are installed for the site via `deploy_tools/get_dependencies.py`, such as [Fuse.js](https://fusejs.io/), fonts, and so on. These dependencies are stored in `assets/js/vendor/` and various locations in the `static/` directory.
-3. The BibTeX file is converted into JSON and stored in a JavaScript file, `assets/js/entries.js`. In addition, Markdown files are generated for every entry and stored in `content/entries/`. This process is controlled by `deploy_tools/generate_compendium.py`.
-4. `hugo --minify` is run, generating the HTML, CSS, and JS files that are served by the site. These are stored in the `public/` directory.
-5. Additional files are copied over from `deploy_tools/additional_files/` into the public directory, and `data/data.bib` is copied into `public/data/data.bib`.
+2. The BibTeX file is converted into JSON and stored in a JavaScript file, `assets/js/entries.js`. In addition, Markdown files are generated for every entry and stored in `content/entries/`. This process is controlled by `deploy_tools/generate_compendium.py`.
+3. `hugo --minify` is run, generating the HTML, CSS, and JS files that are served by the site. These are stored in the `public/` directory.
+4. Additional files are copied over from `deploy_tools/additional_files/` into the public directory, and `data/data.bib` is copied into `public/data/data.bib`.
 
 The contents of the `public/` directory are then pushed to the [the-encryption-compendium.github.io repository](https://github.com/The-Encryption-Compendium/the-encryption-compendium.github.io), from which they are then used to serve the site.
 
@@ -20,7 +19,7 @@ After you clone and `cd` into this repository, there are two steps to start buil
 
 - **Download Hugo:** [download the latest version of Hugo](https://github.com/gohugoio/hugo/releases) and place it somewhere on your system `PATH`. You may also pick one of the alternative installation methods described in the [Hugo manual](https://gohugo.io/getting-started/installing/), if you prefer.
 - **Install pre-commit hooks:** this repository uses pre-commit hooks via the [pre-commit](https://pre-commit.com/) Python package to check for private keys, enforce consistent styling, and so on for code pushed to the repository. You can install the package with `pip install --user pre-commit`, and then install the Git hooks with `pre-commit install`.
-- **Build locally**: finally, you have to step through the [build process](#build-process) in order to download all of the files you need to get the site running. There is a convenience script, [`deploy_tools/build_local.sh`](deploy_tools/build_local.sh), that you can use to download external dependencies.
+- **Build locally**: finally, you have to step through the [build process](#build-process) in order to download all of the files you need to get the site running.
 
 Once you've completed these steps, you can run the site by executing `hugo server` and then going to http://localhost:1313. HTML, CSS, and other files are saved to the `public/` directory while the site is running. As you modify files locally, your changes should be reflected in your local instance of the site.
 
