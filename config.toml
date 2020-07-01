@@ -7,7 +7,10 @@ resourceDir = "./resources"
 [params]
     description = "The encryption literature database"
     github = "https://github.com/The-Encryption-Compendium/TECv2"
-    # twitter = ""
+    twitter = "https://twitter.com/SiliconFlatiron"
+
+    # Development parameters
+    use_development_vue_js = false
 
 [taxonomies]
     tag = "tags"

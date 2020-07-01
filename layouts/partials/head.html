@@ -26,5 +26,9 @@
     type="text/css"
     href="{{ $style.RelPermalink }}">
 
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  {{ if .Site.Params.Use_Development_Vue_JS }}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  {{ else }}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  {{ end }}
 </head>
