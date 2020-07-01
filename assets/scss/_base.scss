@@ -98,6 +98,20 @@ a.anchor:hover {
   cursor: default;
 }
 
+.tag-link {
+  text-decoration: none !important;
+}
+
+.tag-link:hover {
+  text-decoration: none !important;
+}
+
+span.tag-link {
+  color: black !important;
+  background: white;
+  border: 1px solid black;
+}
+
 /****************************
  * CSS for search-related components
  ****************************/

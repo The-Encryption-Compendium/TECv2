@@ -165,6 +165,13 @@ def generate_page_for_entry(entry: dict):
         url = f"**URL**: [{url}]({url})"
     fields.append(url)
 
+    # Tags
+    tags = entry.get("tags")
+    if tags:
+        tags = map(lambda t: f'{{{{< tag tagname="{t}" >}}}}', tags)
+        tags = f"**Tags**: {' '.join(tags)}"
+    fields.append(tags)
+
     # Abstract
     abstract = entry.get("abstract")
     if abstract:
