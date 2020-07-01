@@ -36,6 +36,7 @@ const _search_result_template = `
   <div>
     <div><span class="uk-text-bold">Authors:</span> {{ authors }}</div>
     <div><span class="uk-text-bold">Published:</span> {{ published }}</div>
+    <div><span class="uk-text-bold">Tags:</span> {{ tags }}</div>
     <p>
       <a v-bind:href="'/entries/' + id">See more</a>
     </p>
@@ -49,7 +50,7 @@ Vue.component("search-stats", {
 });
 
 Vue.component("search-result", {
-  props: ["title", "published", "authors", "id"],
+  props: ["title", "published", "authors", "tags", "id"],
   template: _search_result_template,
 });
 
@@ -62,6 +63,7 @@ function generate_result_component(entry) {
   el.setAttribute("title", entry.title);
   el.setAttribute("published", get_publication_date(entry));
   el.setAttribute("authors", get_authors(entry));
+  el.setAttribute("tags", get_tags(entry));
   el.setAttribute("id", entry.id);
 
   return el;

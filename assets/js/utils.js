@@ -62,3 +62,8 @@ function get_authors(entry) {
   }
   return entry.authors.join(", ");
 }
+
+function get_tags(entry) {
+  // Entry tags
+  return entry.tags.join(", ");
+}
