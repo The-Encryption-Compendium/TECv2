@@ -9,8 +9,8 @@ repos:
     rev: 19.10b0
     hooks:
       - id: black
-  - repo: https://github.com/prettier/prettier
-    rev: "2.0.4"
-    hooks:
-      - id: prettier
-        files: .*\.js$
+  #- repo: https://github.com/prettier/prettier
+  #  rev: "2.1.2"
+  #  hooks:
+  #    - id: prettier
+  #      files: .*\.js$
