@@ -18,7 +18,6 @@ The contents of the `public/` directory are then pushed to the [the-encryption-c
 After you clone and `cd` into this repository, there are two steps to start building the site and testing it locally:
 
 - **Download Hugo:** [download the latest version of Hugo](https://github.com/gohugoio/hugo/releases) and place it somewhere on your system `PATH`. You may also pick one of the alternative installation methods described in the [Hugo manual](https://gohugo.io/getting-started/installing/), if you prefer.
-- **Install pre-commit hooks:** this repository uses pre-commit hooks via the [pre-commit](https://pre-commit.com/) Python package to check for private keys, enforce consistent styling, and so on for code pushed to the repository. You can install the package with `pip install --user pre-commit`, and then install the Git hooks with `pre-commit install`.
 - **Build locally**: finally, you have to step through the [build process](#build-process) in order to download all of the files you need to get the site running.
 
 Once you've completed these steps, you can run the site by executing `hugo server` and then going to http://localhost:1313. HTML, CSS, and other files are saved to the `public/` directory while the site is running. As you modify files locally, your changes should be reflected in your local instance of the site.

@@ -53,7 +53,7 @@ draft = false
   {{% landing-page/team
     title="TCP Web Development Team"
     subtitle="Led by Dr. Dan Massey, TCP Program Director" %}}
-  - [Will Shand](https://kernelmethod.dev)
+  - [Will Shand](https://kernelmethod.org)
   - [Pranav Gummaraj Srinivas](http://linkedin.com/in/pranav-gs)
   {{% /landing-page/team %}}
 
