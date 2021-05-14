@@ -9,54 +9,29 @@ A site-wide footer with credits, contact information, etc.
       {{/* First column (acknowledgments) */}}
       <div class="uk-width-1-2@m acknowledgments">
         The Encryption Compendium is a project of the
-        <a href="https://siliconflatirons.org/">
+        <a href="https://siliconflatirons.org/" target="_blank">
           Silicon Flatirons Center for Law, Technology, and Entrepreneurship
         </a>
-        at Colorado Law and the
-        <a href="https://www.colorado.edu/program/tcp/">
-          Technology, Cybersecurity, and Policy Center
+        at Colorado Law. To learn more about the project and the center, please visit
+        <a href="https://siliconflatirons.org/encryption-compendium/" target="_blank">
+          https://siliconflatirons.org/encryption-compendium/
+        </a>,
+        or visit
+        <a href="https://github.com/The-Encryption-Compendium/TECv2" target="_blank">
+          our GitHub
         </a>
-        at the CU Boulder College of Engineering and Applied Science. This project is made possible through an
-        unrestricted gift by <a href="https://facebook.com">Facebook</a>.
+        to see more.
       </div>
 
-      {{/* Second column (additional resources) */}}
+      {{/* Second column (logos) */}}
       <div class="uk-width-1-2@m">
         <div class="uk-child-width-1-2@m" uk-grid="">
           <div>
-            <ul class="uk-list">
-              <li>
-                <a class="uk-link" href="/#about">About</a>
-              </li>
-
-              {{/*
-              <li>
-                <a class="uk-link" href="#">Contact us</a>
-              </li>
-              */}}
-              <li>
-                <a class="uk-link" href="/#team">Team</a>
-              </li>
-            </ul>
+            <img src="/img/SILC_logo.png" alt="Silicon Flatirons logo">
           </div>
 
           <div>
-            <ul class="uk-list">
-              {{ if .Site.Params.Github }}
-              <li>
-                <a target="_blank" class="uk-link" href="{{ .Site.Params.GitHub }}">
-                  <span uk-icon="icon: github"></span> GitHub
-                </a>
-              {{ end }}
-              </li>
-              {{ if .Site.Params.Twitter }}
-              <li>
-                <a target="_blank" class="uk-link" href="{{ .Site.Params.Twitter }}">
-                  <span uk-icon="icon: twitter"></span> Twitter
-                </a>
-              </li>
-              {{ end }}
-            </ul>
+            <img src="/img/Colorado_Law_rev_center_gold_law.png" alt="Colorado Law logo">
           </div>
         </div>
       </div>
