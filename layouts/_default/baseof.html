@@ -13,9 +13,7 @@
 
     {{- partial "footer.html" . -}}
 
-    {{/*
-    Javascript imports
-    */}}
+    {{/* Javascript imports */}}
 
     {{/* Vendor JS */}}
 
@@ -23,7 +21,11 @@
     {{ $uikit := resources.Get "js/vendor/uikit.min.js" }}
     {{ $uikit_icons := resources.Get "js/vendor/uikit-icons.min.js" }}
     {{ $fuse := resources.Get "js/vendor/fuse.js" }}
-    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse | resources.Concat "js/vendor.js" }}
+    {{ $vue := resources.Get "js/vendor/vue.2.6.11.prod.js" }}
+    {{ if .Site.Params.Use_Development_Vue_JS }}
+      {{ $vue = resources.Get "js/vendor/vue.dev.js" }}
+    {{ end }}
+    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse $vue | resources.Concat "js/vendor.js" }}
     {{ $vendor_js := resources.Minify $vendor_js | resources.Fingerprint "sha256" }}
     <script
       type="text/javascript"
