@@ -1,62 +1,62 @@
 /* Custom CSS for the site */
 
 html, body {
-  font-family: $site-font !important;
-  height: 100%;
-  min-height: 100%;
-  margin: 0;
+    font-family: $site-font !important;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
 }
 
 body {
-  display:flex;
-  flex-direction:column;
+    display:flex;
+    flex-direction:column;
 }
 
 .content {
-  min-width: 80%;
+    min-width: 80%;
 }
 
 .monospace {
-  font-family: monospace, courier, sans-serif !important;
+    font-family: monospace, courier, sans-serif !important;
 }
 
 .uk-tab li a {
-  color: #444;
+    color: #444;
 }
 
 .uk-tab li a:hover {
-  color: #444;
+    color: #444;
 }
 
 br.sep {
-  margin-top: 2em;
+    margin-top: 2em;
 }
 
 .site-title {
-  font-family: $title-font !important;
+    font-family: $title-font !important;
 }
 
 .tag-selector-button {
-  color: black;
-  background-color: white;
+    color: black;
+    background-color: white;
 }
 
 .landing-page-searchbar {
-  margin-top: auto;
-  margin-bottom: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 // Used to display the list of researchers
 div.researcher-list li {
-  margin-top: 5px;
-  margin-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 /****************************
  * Background colors
  ****************************/
 .bg-white {
-  background-color: white;
+    background-color: white;
 }
 
 /****************************
@@ -64,14 +64,14 @@ div.researcher-list li {
  ****************************/
 
 .deselected-tag {
-  background-color: white !important;
-  color: black !important;
-  border: 1px solid black !important;
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid black !important;
 }
 
 .selected-tag {
-  background-color: #222 !important;
-  color: #fff !important;
+    background-color: #222 !important;
+    color: #fff !important;
 }
 
 /****************************
@@ -79,7 +79,7 @@ div.researcher-list li {
  ****************************/
 
 a.back-button {
-  border: 2px solid #d6dbdf;
+    border: 2px solid #d6dbdf;
 }
 
 /****************************
@@ -87,29 +87,37 @@ a.back-button {
  ****************************/
 
 a.anchor {
-  text-decoration: none !important;
-  color: inherit !important;
-  pointer-events: inherit;
-  cursor: default;
+    text-decoration: none !important;
+    color: inherit !important;
+    pointer-events: inherit;
+    cursor: default;
 }
 
 a.anchor:hover {
-  text-decoration: none;
-  cursor: default;
+    text-decoration: none;
+    cursor: default;
 }
 
 .tag-link {
-  text-decoration: none !important;
+    text-decoration: none !important;
 }
 
 .tag-link:hover {
-  text-decoration: none !important;
+    text-decoration: none !important;
+}
+
+.search-title {
+    text-decoration: none !important;
+}
+
+.search-title:hover {
+    text-decoration: none !important;
 }
 
 span.tag-link {
-  color: black !important;
-  background: white;
-  border: 1px solid black;
+    color: black !important;
+    background: white;
+    border: 1px solid black;
 }
 
 /****************************
@@ -117,14 +125,14 @@ span.tag-link {
  ****************************/
 
 .paginator {
-  font-size: 1.5em;
-  margin-top: auto;
-  margin-bottom: 1em;
+    font-size: 1.5em;
+    margin-top: auto;
+    margin-bottom: 1em;
 }
 
 .searchbar {
-  background-color: white;
-  border: 1px solid black;
+    background-color: white;
+    border: 1px solid black;
 }
 
 /****************************
@@ -132,15 +140,15 @@ span.tag-link {
  ****************************/
 
 .landing-page-background {
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  position: fixed;
-  z-index: -1;
-  background-image: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url("/img/landing_page_background_img.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: -1;
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("/img/landing_page_background_img.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    opacity: 0.5;
 }

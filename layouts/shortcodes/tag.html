@@ -1,5 +1,5 @@
 {{/* Displays a tag, and provides a link to all of the entries with that tag */}}
 
-<a class="tag-link" href="/tags/{{ .Get "tagname" }}">
+<a class="tag-link" href="/tags/{{ .Get "tagname" | urlize }}">
   <span class="tag-link uk-badge">{{ .Get "tagname" }}</span>
 </a>
