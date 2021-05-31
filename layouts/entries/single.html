@@ -8,6 +8,14 @@
       </span>
       <div id="entry_content" class="uk-article uk-padding-small">
       <h2 class="uk-h2">{{ .Title }}</h2>
+      <h3 class="uk-h3 uk-margin-remove-top">
+        Tags:
+        {{ range .Page.Params.tags }}
+          <a class="tag-link" href="/tags/{{ urlize . }}">
+            <span class="tag-link uk-badge">{{ . }}</span>
+          </a>
+        {{ end }}
+      </h3>
       {{ .Content }}
       </div>
     </div>

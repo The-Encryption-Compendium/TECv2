@@ -130,9 +130,6 @@ tags = {self.tags}
             content.append(f"**Published**: {self.date}")
         if self.url is not None:
             content.append(f"**URL**: [{self.url}]({self.url})")
-        if len(self.tags) > 0:
-            tags = map(lambda t: f"{{{{< tag tagname=\"{t}\" >}}}}", self.tags)
-            content.append(f"**Tags**: {' '.join(tags)}")
         if self.abstract is not None:
             content.append(f"**Abstract**: {self.abstract}")
 
