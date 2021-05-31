@@ -39,22 +39,6 @@ function month_name(month_num) {
  * Functions used to help display compendium entries
  */
 
-function get_publication_date(entry) {
-  // Entry publication date
-  let publication_date = "";
-  if (entry.day !== null) {
-    publication_date += entry.day;
-  }
-  if (entry.month !== null) {
-    publication_date += " " + month_name(entry.month);
-  }
-  if (entry.year !== null) {
-    publication_date += " " + entry.year;
-  }
-
-  return publication_date;
-}
-
 function get_authors(entry) {
   // Entry authors
   if (entry.authors.length === 0) {
