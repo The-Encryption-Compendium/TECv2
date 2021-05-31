@@ -35,13 +35,11 @@
 
     {{/* Custom JS */}}
 
-    {{ $entries := resources.Get "js/entries.js" | resources.Minify }}
-    {{ $utils := resources.Get "js/utils.js" | resources.Minify }}
-    {{ $site_js := slice $entries $utils | resources.Concat "js/site.js" | resources.Fingerprint "sha256" }}
+    {{ $utils := resources.Get "js/utils.js" | resources.Minify | resources.Fingerprint "sha256" }}
     <script
       type="text/javascript"
-      src="{{ $site_js.RelPermalink }}"
-      integrity="{{ $site_js.Data.Integirty }}">
+      src="{{ $utils.RelPermalink }}"
+      integrity="{{ $utils.Data.Integirty }}">
     </script>
 
     {{ block "javascripts" . }}
