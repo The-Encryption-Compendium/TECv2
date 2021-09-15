@@ -107,7 +107,7 @@ class CompendiumEntry:
         authors = bibtex_entry.get("author", [])
         if authors != []:
             matches = cls.__AUTHORS_REGEX.findall(authors)
-            authors = matches if len(authors) > 0 else [authors]
+            authors = matches if len(matches) > 0 else [authors]
 
         return cls(title, abstract, date, authors, publisher, url, tags)
 
