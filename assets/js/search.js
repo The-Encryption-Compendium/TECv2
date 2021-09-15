@@ -167,7 +167,6 @@ fetch("/data/entries.json")
         // Re-run search whenever something new is put into the search bar
         document.getElementById("id_query").onkeyup = function (e) {
           input = document.getElementById("id_query").value;
-          console.log(input);
 
           // Remove all search results that are currently displayed
           document.querySelectorAll(".search_result").forEach((el) => el.remove());
