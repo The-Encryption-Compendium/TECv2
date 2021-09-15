@@ -35,4 +35,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install mypy==0.910
       - name: Run type checks
-        run: mypy --strict deploy_tools/generate_compendium.py
+        run: mypy --strict deploy_tools/generate_compendium.py deploy_tools/normalize-unicode.py
