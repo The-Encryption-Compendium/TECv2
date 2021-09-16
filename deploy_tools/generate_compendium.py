@@ -165,7 +165,9 @@ tags = {self.tags}
         if add_hash:
             # Create a hash of the entire CompendiumEntry and add its first few characters
             # to the slug.
-            data = json.dumps(self.to_json()).encode("utf-8")
+            uid_keys = ("title", "date", "publisher", "authors")
+            uid_dict = {k: v for k, v in self.to_json().items() if k in uid_keys}
+            data = json.dumps(uid_dict, indent=None, sort_keys=True, separators=(',',':')).encode("utf-8")
             h = sha256(data).hexdigest()
             slug += "-" + h[:hash_len]
 
