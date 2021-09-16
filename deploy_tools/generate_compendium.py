@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 """
 Python script to generate compendium entries for the site
 """
@@ -12,18 +14,18 @@ import os
 import re
 
 from bibtexparser.bparser import BibTexParser
+from collections import Counter
+from dataclasses import dataclass
+from typing import List, Optional
+from pathlib import Path
 
 """
 Global variables
 """
 
-BASE_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
-ENTRIES_SCRIPT = os.path.relpath(
-    os.path.join(BASE_DIR, "assets", "js", "entries.js"), os.getcwd()
-)
-MARKDOWN_ENTRIES_DIRECTORY = os.path.relpath(
-    os.path.join(BASE_DIR, "content", "entries"), os.getcwd()
-)
+BASE_DIR = Path(__file__).parent.parent
+ENTRIES_JSON = BASE_DIR / "static" / "data" / "entries.json"
+MARKDOWN_ENTRIES = BASE_DIR / "content" / "entries"
 
 """
 Helper functions
@@ -34,6 +36,141 @@ ID_MONTH_MAPPING = dict((num, name) for (num, name) in enumerate(calendar.month_
 
 # Dictionary mapping month names to month numbers
 MONTH_ID_MAPPING = dict((name, num) for (num, name) in enumerate(calendar.month_name))
+
+def truncate_abstract(abstract: str, max_len: int = 0):
+    """Truncate an abstract to a maximum possible length. If the maximum length is set to
+    zero then we don't perform any truncation at all."""
+    return (abstract if max_len <= 0 else abstract[:max_len])
+
+@dataclass
+class PublicationDate:
+    year: int
+    month: Optional[int]
+
+    # Create a mapping between month number and month name, and vice-versa
+    __NUM_TO_MONTH_MAPPING = dict((num, name) for (num, name) in enumerate(calendar.month_name))
+    __MONTH_TO_NUM_MAPPING = dict((name, num) for (num, name) in enumerate(calendar.month_name))
+
+    @classmethod
+    def parse_bibtex(cls, bibtex_entry: dict) -> Optional[PublicationDate]:
+        if "year" not in bibtex_entry:
+            return None
+        else:
+            year = int(bibtex_entry["year"])
+            month = cls.__MONTH_TO_NUM_MAPPING.get(bibtex_entry.get("month"))
+            return cls(year, month)
+
+    def __str__(self) -> str:
+        if self.month is None:
+            return str(self.year)
+        else:
+            return f"{self.__NUM_TO_MONTH_MAPPING[self.month]} {self.year}"
+
+
+@dataclass
+class CompendiumEntry:
+    """Wraps a single entry in the compendium."""
+
+    title: str
+    abstract: Optional[str]
+    date: Optional[PublicationDate]
+    authors: List[str]
+    publisher: Optional[str]
+    url: Optional[str]
+    tags: List[str]
+
+    __AUTHORS_REGEX = re.compile(r"\{([^\}]+)\}")
+
+    @classmethod
+    def parse_bibtex(cls, bibtex_entry: dict) -> CompendiumEntry:
+        date = PublicationDate.parse_bibtex(bibtex_entry)
+        abstract = bibtex_entry.get("abstract")
+        url = bibtex_entry.get("url")
+
+        # Tags are comma-separated under the 'keywords' field
+        tags = bibtex_entry.get("keywords", [])
+        if tags != []:
+            tags = tags.split(", ")
+
+        # Publisher info is usually contained under one of multiple possible keys
+        publisher = (bibtex_entry.get(k) for k in ("publisher", "journal", "journaltitle"))
+        publisher = next(filter(lambda info: info is not None, publisher), None)
+
+        # TODO (kernelmethod): less hacky way to get around removing brackets from titles
+        title = bibtex_entry.get("title")
+        if title is not None:
+            title = title.replace("{", "").replace("}", "")
+
+            # Replace weird character strings in the title that sometimes occur, e.g. "\&"
+            title = title.replace("\\", "\\\\")
+
+        authors = bibtex_entry.get("author", [])
+        if authors != []:
+            matches = cls.__AUTHORS_REGEX.findall(authors)
+            authors = matches if len(matches) > 0 else [authors]
+
+        return cls(title, abstract, date, authors, publisher, url, tags)
+
+    def to_markdown(self) -> str:
+        # The title is expected to be wrapped in quotes, so we have to replace occurrences of
+        # " with \"
+        title = self.title.replace('"', '\\"')
+        markdown = f"""\
++++
+draft = false
+title = "{title}"
+tags = {self.tags}
++++\n\n"""
+
+        content = []
+
+        if len(self.authors) > 0:
+            content.append(f"**Authors**: {', '.join(self.authors)}")
+        if self.date is not None:
+            content.append(f"**Published**: {self.date}")
+        if self.url is not None:
+            content.append(f"**URL**: [{self.url}]({self.url})")
+        if self.abstract is not None:
+            content.append(f"**Abstract**: {self.abstract}")
+
+        content = "\n\n".join(content)
+        markdown += content
+        return markdown
+
+    def to_json(self) -> dict:
+        """Convert the CompendiumEntry to a dictionary compatible
+        with JSON."""
+        return {
+            "title": self.title,
+            "abstract": truncate_abstract(self.abstract),
+            "publisher": self.publisher,
+            "date": str(self.date) if self.date is not None else None,
+            "url": self.url,
+            "authors": self.authors,
+            "tags": self.tags,
+        }
+
+    def slug(
+        self,
+        max_length: int = 50,
+        add_hash: bool = False,
+        hash_len: int = 8,
+    ) -> str:
+        """Return a slug for the entry name."""
+        from hashlib import sha256
+        from slugify import slugify
+
+        slug = slugify(self.title, max_length=max_length)
+
+        if add_hash:
+            # Create a hash of the entire CompendiumEntry and add its first few characters
+            # to the slug.
+            data = json.dumps(self.to_json()).encode("utf-8")
+            h = sha256(data).hexdigest()
+            slug += "-" + h[:hash_len]
+
+        return slug
+
 
 """
 BibTeX parsing
@@ -49,153 +186,7 @@ def parse_bibtex(bibfile: str):
     with open(bibfile, "r") as f:
         bib_db = parser.parse_file(f).entries_dict
 
-    entries = []
-    for (ii, entry) in enumerate(bib_db.values()):
-        year, month, day = _extract_date(entry)
-        entries.append(
-            {
-                "id": ii,
-                "title": _extract_title(entry),
-                "abstract": entry.get("abstract"),
-                "publisher_text": _extract_publisher(entry),
-                "year": year,
-                "month": month,
-                "day": day,
-                "url": entry.get("url"),
-                "authors": _extract_authors(entry),
-                "tags": _extract_tags(entry),
-            }
-        )
-
-    return entries
-
-
-def _extract_date(entry):
-    # TODO: day
-    year = entry.get("year")
-    month = entry.get("month")
-    if year is not None:
-        year = int(year)
-    if month is not None:
-        month = MONTH_ID_MAPPING.get(month)
-    return year, month, None
-
-
-def _extract_title(entry):
-    title = entry.get("title")
-    if title is not None:
-        # Strip brackets { } from the title
-        title = title.replace("{", "").replace("}", "")
-    return title
-
-
-def _extract_publisher(entry):
-    for key in ("publisher", "journal", "journaltitle"):
-        if key in entry:
-            return entry[key]
-    return None
-
-
-def _extract_tags(entry):
-    tags = entry.get("keywords")
-    if tags is not None:
-        tags = tags.split(", ")
-    else:
-        tags = []
-    return tags
-
-
-def _extract_authors(entry):
-    authors = entry.get("author")
-    if authors is not None:
-        patt = re.compile(r"\{([^\}]+)\}")
-        matches = patt.findall(authors)
-        if len(matches) > 0:
-            authors = matches
-        else:
-            authors = [authors]
-    else:
-        authors = []
-    return authors
-
-
-"""
-Markdown generation
-"""
-
-
-def generate_page_for_entry(entry: dict):
-    """
-    Take an entry from the compendium and convert it into a Markdown file
-    that can be used by Hugo to create a page for the entry.
-    """
-
-    fields = []
-
-    # Title
-    # - Sometimes the titles contain weird character strings like
-    #   "\&", which we have to fix so that they're rendered as intended.
-    # - The title is expected to be wrapped in quotes, so we have to
-    #   replace occurrences of " with \".
-    title = entry["title"]
-    title = title.replace("\\", "\\\\")
-    title = title.replace('"', '\\"')
-
-    # Authors
-    authors = entry.get("authors")
-    if authors and len(authors) > 0:
-        authors = f"**Authors**: {', '.join(authors)}"
-    else:
-        authors = None
-    fields.append(authors)
-
-    # Publication date
-    year, month = entry.get("year"), entry.get("month")
-    if year and month:
-        date = f"**Published**: {ID_MONTH_MAPPING[month]} {year}"
-    elif year:
-        date = f"**Published**: {year}"
-    else:
-        date = None
-    fields.append(date)
-
-    # URL
-    url = entry.get("url")
-    if url:
-        url = f"**URL**: [{url}]({url})"
-    fields.append(url)
-
-    # Tags
-    tags = entry.get("tags")
-    if tags:
-        tags = map(lambda t: f'{{{{< tag tagname="{t}" >}}}}', tags)
-        tags = f"**Tags**: {' '.join(tags)}"
-    fields.append(tags)
-
-    # Abstract
-    abstract = entry.get("abstract")
-    if abstract:
-        abstract = f"**Abstract**: {abstract}"
-    fields.append(abstract)
-
-    # Combine fields together, filtering out fields that didn't
-    # appear in the entry
-    fields = [f"{field}" for field in fields if field is not None]
-    fields = "\n\n".join(fields)
-
-    page = f"""\
-+++
-draft = false
-title = "{title}"
-tags = {entry.get('tags',[])}
-+++
-{fields}
-"""
-
-    entry_file = os.path.join(MARKDOWN_ENTRIES_DIRECTORY, f"{entry['id']}.md")
-    with open(entry_file, "w") as f:
-        f.write(page)
-
+    return [CompendiumEntry.parse_bibtex(v) for v in bib_db.values()]
 
 """
 Argument parser
@@ -205,6 +196,11 @@ parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFo
 parser.add_argument(
     "infile", help="BibTeX file containing the site's compendium entries.",
 )
+parser.add_argument(
+    "--remove-old-entries",
+    action="store_true",
+    help="Remove old entries from the content directory",
+)
 
 """
 Main script
@@ -213,13 +209,44 @@ Main script
 if __name__ == "__main__":
     args = parser.parse_args()
     entries = parse_bibtex(args.infile)
-    entries_js = f"const entries = {json.dumps(entries, indent=2)}"
 
-    with open(ENTRIES_SCRIPT, "w") as f:
-        f.write(entries_js)
-        print(f"Wrote entries to {ENTRIES_SCRIPT}")
+    # Check that all slugs are unique (otherwise we could end up overwriting a compendium
+    # entry). If they aren't, that's probably an indicator that two entries are identical.
+    slugs = [e.slug(add_hash=True) for e in entries]
+    duplicate_slugs = [slug for (slug, count) in Counter(slugs).items() if count > 1]
+    if len(duplicate_slugs) > 0:
+        raise RuntimeError(f"Duplicate slugs detected: {duplicate_slugs}")
 
-    for entry in entries:
-        generate_page_for_entry(entry)
+    # If --remove-old-entries was specified, we should delete existing entries before
+    # writing new ones
+    if args.remove_old_entries:
+        old_entries = MARKDOWN_ENTRIES.glob("*.md")
+        old_entries = [p for p in old_entries if p.is_file()]
+        for path in old_entries:
+            path.unlink()
 
-    print(f"Created {len(entries)} pages in {MARKDOWN_ENTRIES_DIRECTORY}")
+        print(f"Removed {len(old_entries)} old entries")
+
+    # Save all of the entries as markdown files
+    print(f"Writing markdown files to {MARKDOWN_ENTRIES}")
+    for slug, entry in zip(slugs, entries):
+        # Write markdown to corresponding file
+        outfile = MARKDOWN_ENTRIES / f"{slug}.md"
+        with open(outfile, "w") as f:
+            f.write(entry.to_markdown())
+
+    print(f"Wrote {len(entries)} entries")
+
+    # Write entries to JSON
+    entries_json = []
+    for slug, e in zip(slugs, entries):
+        e_json = e.to_json()
+        e_json["slug"] = slug
+        entries_json.append(e_json)
+
+    entries_json = json.dumps(entries_json)
+
+    with open(ENTRIES_JSON, "w") as f:
+        f.write(entries_json)
+    print(f"Wrote entries to {ENTRIES_JSON}")
+

@@ -38,7 +38,7 @@ const _search_result_template = `
     <div><span class="uk-text-bold">Published:</span> {{ published }}</div>
     <div><span class="uk-text-bold">Tags:</span> {{ tags }}</div>
     <p>
-      <a v-bind:href="'/entries/' + id">See more</a>
+      <a v-bind:href="'/entries/' + slug">See more</a>
     </p>
   </div>
   <hr>
@@ -50,7 +50,7 @@ Vue.component("search-stats", {
 });
 
 Vue.component("search-result", {
-  props: ["title", "published", "authors", "tags", "id"],
+  props: ["title", "published", "authors", "tags", "slug"],
   template: _search_result_template,
 });
 
@@ -61,10 +61,10 @@ function generate_result_component(entry) {
 
   // Entry title
   el.setAttribute("title", entry.title);
-  el.setAttribute("published", get_publication_date(entry));
+  el.setAttribute("published", entry.date);
   el.setAttribute("authors", get_authors(entry));
   el.setAttribute("tags", get_tags(entry));
-  el.setAttribute("id", entry.id);
+  el.setAttribute("slug", entry.slug);
 
   return el;
 }
@@ -138,10 +138,7 @@ function search(text, tags, entries) {
   return results;
 }
 
-/*
- * Script to run on page load
- */
-
+// Pre-populate the search field with the last query
 let query = new URLSearchParams(location.search).get("query");
 if (query === null) {
   query = "";
@@ -156,19 +153,28 @@ if (tags === null) {
   tags = JSON.parse(decodeURIComponent(tags));
 }
 
-search(query, tags, entries);
-
-// Pre-populate the search field with the last query
 document.getElementById("id_query").value = query;
 
-// Re-run search whenever something new is put into the search bar
-document.getElementById("id_query").onkeyup = function (e) {
-  input = document.getElementById("id_query").value;
-  console.log(input);
+/*
+ * Script to run on page load
+ */
 
-  // Remove all search results that are currently displayed
-  document.querySelectorAll(".search_result").forEach((el) => el.remove());
+fetch("/data/entries.json")
+    .then(data => {
+        return data.json()
+    })
+    .then(entries => {
+        // Re-run search whenever something new is put into the search bar
+        document.getElementById("id_query").onkeyup = function (e) {
+          input = document.getElementById("id_query").value;
 
-  // Re-run search with new input
-  search(input, tags, entries);
-};
+          // Remove all search results that are currently displayed
+          document.querySelectorAll(".search_result").forEach((el) => el.remove());
+
+          // Re-run search with new input
+          search(input, tags, entries);
+        };
+
+        // Search on the initial input, if one was provided
+        search(query, tags, entries);
+    });
