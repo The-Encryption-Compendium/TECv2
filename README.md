@@ -6,6 +6,4 @@ This repository contains the source code for [The Encryption Compendium](https:/
 ## Development
 See [DEVELOPMENT.md](/DEVELOPMENT.md) for more information about how to develop the site. If you'd like to open an issue or make a pull request, please refer to [CONTRIBUTING.md](/CONTRIBUTING.md) for contribution guidelines.
 
-![Silicon Flatirons logo](/static/img/SILC_logo.png)
-
-![CU Boulder Law School logo](/static/img/Colorado_Law_rev_center_gold_law.png)
+![Silicon Flatirons and CU Boulder Law School logos](/static/img/sponsor_logos.png)
