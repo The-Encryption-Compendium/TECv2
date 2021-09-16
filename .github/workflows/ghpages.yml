@@ -66,16 +66,16 @@ jobs:
         run: find public/ -type f
 
       ############################################################################
-      # Deploy the site to GitHub pages. Only triggered by pushes to master.
+      # Deploy the site to GitHub pages. Only triggered by pushes to main.
       ############################################################################
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: The-Encryption-Compendium/the-encryption-compendium.github.io
-          publish_branch: master
+          publish_branch: main
           publish_dir: ./public
           user_name: "github-actions[bot]"
           user_email: "github-actions[bot]@users.noreply.github.com"

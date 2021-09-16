@@ -8,7 +8,7 @@ CURRENT_DIR=$(dirname "$0")
 VENV_DIR="${CURRENT_DIR}/venv"
 
 # Download compendium entries locally
-wget https://raw.githubusercontent.com/The-Encryption-Compendium/the-encryption-compendium.github.io/master/data/data.bib \
+wget https://raw.githubusercontent.com/The-Encryption-Compendium/the-encryption-compendium.github.io/main/data/data.bib \
     -O "${CURRENT_DIR}/../data/data.bib"
 
 # Download dependencies

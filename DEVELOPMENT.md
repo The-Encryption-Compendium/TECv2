@@ -4,7 +4,7 @@ TECv2 is a static site created using [Hugo](https://gohugo.io). The [original ve
 
 ## Build process
 
-This repository primarily contains various scripts, templates, and JS/CSS files. However, to get the site up and running, it must first be built using Hugo. Here is an overview of how the site is built (using [GitHub actions](.github/workflows/ghpages.yml)) whenever a new commit is pushed to `master`:
+This repository primarily contains various scripts, templates, and JS/CSS files. However, to get the site up and running, it must first be built using Hugo. Here is an overview of how the site is built (using [GitHub actions](.github/workflows/ghpages.yml)) whenever a new commit is pushed to `main`:
 
 1. Compendium entries are downloaded from Zotero using the `deploy_tools/scrape_zotero.py` script and an API key for the research team's Zotero. There are stored in a BibTeX file, `data/data.bib`.
 2. The BibTeX file is converted into JSON and stored in a JavaScript file, `assets/js/entries.js`. In addition, Markdown files are generated for every entry and stored in `content/entries/`. This process is controlled by `deploy_tools/generate_compendium.py`.
