@@ -7,17 +7,20 @@ Python script to generate compendium entries for the site
 """
 
 import argparse
-import bibtexparser
+import bibtexparser # type: ignore
 import calendar
 import json
 import os
 import re
 
-from bibtexparser.bparser import BibTexParser
+from bibtexparser.bparser import BibTexParser # type: ignore
 from collections import Counter
 from dataclasses import dataclass
-from typing import List, Optional
+from hashlib import sha256
+from slugify import slugify # type: ignore
+from typing import Dict, List, Optional, Union
 from pathlib import Path
+
 
 """
 Global variables
@@ -37,7 +40,7 @@ ID_MONTH_MAPPING = dict((num, name) for (num, name) in enumerate(calendar.month_
 # Dictionary mapping month names to month numbers
 MONTH_ID_MAPPING = dict((name, num) for (num, name) in enumerate(calendar.month_name))
 
-def truncate_abstract(abstract: str, max_len: int = 0):
+def truncate_abstract(abstract: str, max_len: int = 0) -> str:
     """Truncate an abstract to a maximum possible length. If the maximum length is set to
     zero then we don't perform any truncation at all."""
     return (abstract if max_len <= 0 else abstract[:max_len])
@@ -52,13 +55,14 @@ class PublicationDate:
     __MONTH_TO_NUM_MAPPING = dict((name, num) for (num, name) in enumerate(calendar.month_name))
 
     @classmethod
-    def parse_bibtex(cls, bibtex_entry: dict) -> Optional[PublicationDate]:
+    def parse_bibtex(cls, bibtex_entry: Dict[str,str]) -> Optional[PublicationDate]:
         if "year" not in bibtex_entry:
             return None
         else:
             year = int(bibtex_entry["year"])
-            month = cls.__MONTH_TO_NUM_MAPPING.get(bibtex_entry.get("month"))
-            return cls(year, month)
+
+        month = bibtex_entry.get("month")
+        return cls(year, cls.__MONTH_TO_NUM_MAPPING.get(month) if month is not None else None)
 
     def __str__(self) -> str:
         if self.month is None:
@@ -82,32 +86,31 @@ class CompendiumEntry:
     __AUTHORS_REGEX = re.compile(r"\{([^\}]+)\}")
 
     @classmethod
-    def parse_bibtex(cls, bibtex_entry: dict) -> CompendiumEntry:
+    def parse_bibtex(cls, bibtex_entry: Dict[str, str]) -> CompendiumEntry:
         date = PublicationDate.parse_bibtex(bibtex_entry)
         abstract = bibtex_entry.get("abstract")
         url = bibtex_entry.get("url")
 
         # Tags are comma-separated under the 'keywords' field
-        tags = bibtex_entry.get("keywords", [])
-        if tags != []:
-            tags = tags.split(", ")
+        combined_tags = bibtex_entry.get("keywords", "")
+        tags = combined_tags.split(", ") if combined_tags != "" else []
 
         # Publisher info is usually contained under one of multiple possible keys
-        publisher = (bibtex_entry.get(k) for k in ("publisher", "journal", "journaltitle"))
-        publisher = next(filter(lambda info: info is not None, publisher), None)
+        possible_publisher = (bibtex_entry.get(k) for k in ("publisher", "journal", "journaltitle"))
+        publisher = next(filter(lambda info: info is not None, possible_publisher), None)
 
         # TODO (kernelmethod): less hacky way to get around removing brackets from titles
-        title = bibtex_entry.get("title")
-        if title is not None:
-            title = title.replace("{", "").replace("}", "")
+        # Replace weird character strings in the title that sometimes occur, e.g. "\&"
+        title = bibtex_entry["title"]
+        title = title.replace("{", "").replace("}", "")
+        title = title.replace("\\", "\\\\")
 
-            # Replace weird character strings in the title that sometimes occur, e.g. "\&"
-            title = title.replace("\\", "\\\\")
-
-        authors = bibtex_entry.get("author", [])
-        if authors != []:
-            matches = cls.__AUTHORS_REGEX.findall(authors)
-            authors = matches if len(matches) > 0 else [authors]
+        combined_authors = bibtex_entry.get("author", "")
+        if combined_authors != "":
+            matches = cls.__AUTHORS_REGEX.findall(combined_authors)
+            authors = matches if len(matches) > 0 else [combined_authors]
+        else:
+            authors = []
 
         return cls(title, abstract, date, authors, publisher, url, tags)
 
@@ -122,27 +125,28 @@ title = "{title}"
 tags = {self.tags}
 +++\n\n"""
 
-        content = []
+        content_list = []
 
         if len(self.authors) > 0:
-            content.append(f"**Authors**: {', '.join(self.authors)}")
+            content_list.append(f"**Authors**: {', '.join(self.authors)}")
         if self.date is not None:
-            content.append(f"**Published**: {self.date}")
+            content_list.append(f"**Published**: {self.date}")
         if self.url is not None:
-            content.append(f"**URL**: [{self.url}]({self.url})")
+            content_list.append(f"**URL**: [{self.url}]({self.url})")
         if self.abstract is not None:
-            content.append(f"**Abstract**: {self.abstract}")
+            content_list.append(f"**Abstract**: {self.abstract}")
 
-        content = "\n\n".join(content)
+        content = "\n\n".join(content_list)
         markdown += content
         return markdown
 
-    def to_json(self) -> dict:
+    def to_json(self) -> Dict[str, Optional[Union[List[str], str]]]:
         """Convert the CompendiumEntry to a dictionary compatible
         with JSON."""
+        abstract = truncate_abstract(self.abstract) if self.abstract is not None else None
         return {
             "title": self.title,
-            "abstract": truncate_abstract(self.abstract),
+            "abstract": abstract,
             "publisher": self.publisher,
             "date": str(self.date) if self.date is not None else None,
             "url": self.url,
@@ -157,10 +161,7 @@ tags = {self.tags}
         hash_len: int = 8,
     ) -> str:
         """Return a slug for the entry name."""
-        from hashlib import sha256
-        from slugify import slugify
-
-        slug = slugify(self.title, max_length=max_length)
+        slug: str = slugify(self.title, max_length=max_length)
 
         if add_hash:
             # Create a hash of the entire CompendiumEntry and add its first few characters
@@ -179,7 +180,7 @@ BibTeX parsing
 """
 
 
-def parse_bibtex(bibfile: str):
+def parse_bibtex(bibfile: str) -> List[CompendiumEntry]:
     """
     Read in a .bib file of compendium entries (as exported by Zotero) and
     convert it into a dictionary.
@@ -222,8 +223,7 @@ if __name__ == "__main__":
     # If --remove-old-entries was specified, we should delete existing entries before
     # writing new ones
     if args.remove_old_entries:
-        old_entries = MARKDOWN_ENTRIES.glob("*.md")
-        old_entries = [p for p in old_entries if p.is_file()]
+        old_entries = [p for p in MARKDOWN_ENTRIES.glob("*.md") if p.is_file()]
         for path in old_entries:
             path.unlink()
 
@@ -240,13 +240,13 @@ if __name__ == "__main__":
     print(f"Wrote {len(entries)} entries")
 
     # Write entries to JSON
-    entries_json = []
+    entries_list = []
     for slug, e in zip(slugs, entries):
         e_json = e.to_json()
         e_json["slug"] = slug
-        entries_json.append(e_json)
+        entries_list.append(e_json)
 
-    entries_json = json.dumps(entries_json)
+    entries_json = json.dumps(entries_list)
 
     with open(ENTRIES_JSON, "w") as f:
         f.write(entries_json)
