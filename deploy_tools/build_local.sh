@@ -11,6 +11,8 @@ VENV_DIR="${CURRENT_DIR}/venv"
 wget https://raw.githubusercontent.com/The-Encryption-Compendium/the-encryption-compendium.github.io/main/data/data.bib \
     -O "${CURRENT_DIR}/../data/data.bib"
 
+"${CURRENT_DIR}/normalize-unicode.py" "${CURRENT_DIR}/../data/data.bib"
+
 # Download dependencies
 python3 -m venv "${VENV_DIR}"
 source "${VENV_DIR}/bin/activate"
