@@ -20,7 +20,7 @@
     {{ $jquery := resources.Get "js/vendor/jquery-3.5.0.min.js" }}
     {{ $uikit := resources.Get "js/vendor/uikit.min.js" }}
     {{ $uikit_icons := resources.Get "js/vendor/uikit-icons.min.js" }}
-    {{ $fuse := resources.Get "js/vendor/fuse.js" }}
+    {{ $fuse := resources.Get "js/vendor/fuse-6.4.6.js" }}
     {{ $vue := resources.Get "js/vendor/vue.2.6.11.prod.js" }}
     {{ if .Site.Params.Use_Development_Vue_JS }}
       {{ $vue = resources.Get "js/vendor/vue.dev.js" }}
