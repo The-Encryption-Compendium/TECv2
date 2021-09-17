@@ -7,12 +7,12 @@ const default_fuse_options = {
   findAllMatches: false,
   includeMatches: false,
   includeScore: false,
-  useExtendedSearch: false,
+  useExtendedSearch: true,
   minMatchCharLength: 1,
   shouldSort: true,
-  threshold: 0.3,
+  threshold: 0.1,
   location: 0,
-  distance: 100,
+  distance: 3000,
   keys: ["title", "abstract", "authors"],
 };
 
