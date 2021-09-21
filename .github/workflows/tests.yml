@@ -34,6 +34,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install mypy==0.910
-          pip install types-requests
+          pip install types-requests types-python-slugify
       - name: Run type checks
-        run: mypy --strict deploy_tools/generate_compendium.py deploy_tools/normalize_unicode.py deploy_tools/scrape_zotero.py
+        run: mypy --strict deploy_tools/
