@@ -8,10 +8,12 @@
 
     <hr>
 
-    <div class="uk-container">
-      <div id="search_stats"></div>
-
+    <div class="uk-container" id="search-results">
       <br>
+
+      <div id="search-stats">
+        <search-stats v-bind:nresults="nresults" v-bind:qtime="qtime"></search-stats>
+      </div>
 
       <div class="uk-container uk-width-1-2@m uk-text-center">
         <form method="GET" action="/search">
@@ -26,7 +28,16 @@
 
       <br>
 
-      <div id="search_results"></div>
+      <div id="results-list">
+        <search-result
+          v-for="res in results"
+          v-bind:title="res.title"
+          v-bind:authors="res.authorString"
+          v-bind:published="res.date"
+          v-bind:tags="res.tagString"
+          v-bind:slug="res.slug">
+        </search-result>
+      </div>
     </div>
   </div>
 </div>
@@ -34,5 +45,5 @@
 
 {{ define "javascripts" }}
 {{ $js := resources.Get "js/search.js" | resources.Minify }}
-<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+<script type="module" src="{{ $js.RelPermalink }}"></script>
 {{ end }}
