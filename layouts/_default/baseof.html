@@ -17,29 +17,38 @@
 
     {{/* Vendor JS */}}
 
+    {{ $vue := resources.Get "js/vendor/vue.global.prod.js" }}
+    {{ if .Site.Params.Use_Development_Vue_JS }}
+      {{ $vue = resources.Get "js/vendor/vue.global.js" }}
+    {{ end }}
+    <script
+      type="text/javascript"
+      src="{{ $vue.RelPermalink }}">
+    </script>
+
     {{ $jquery := resources.Get "js/vendor/jquery-3.5.0.min.js" }}
     {{ $uikit := resources.Get "js/vendor/uikit.min.js" }}
     {{ $uikit_icons := resources.Get "js/vendor/uikit-icons.min.js" }}
     {{ $fuse := resources.Get "js/vendor/fuse-6.4.6.js" }}
-    {{ $vue := resources.Get "js/vendor/vue.2.6.11.prod.js" }}
-    {{ if .Site.Params.Use_Development_Vue_JS }}
-      {{ $vue = resources.Get "js/vendor/vue.dev.js" }}
-    {{ end }}
-    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse $vue | resources.Concat "js/vendor.js" }}
+    {{ $vendor_js := slice $jquery $uikit $uikit_icons $fuse | resources.Concat "js/vendor.js" }}
     {{ $vendor_js := resources.Minify $vendor_js | resources.Fingerprint "sha256" }}
     <script
       type="text/javascript"
-      src="{{ $vendor_js.RelPermalink }}"
-      integrity="{{ $vendor_js.Data.Integrity }}">
+      src="{{ $vendor_js.RelPermalink }}">
     </script>
 
     {{/* Custom JS */}}
 
+    {{ $components := resources.Get "js/modules/components.js" | resources.Minify }}
+    <script
+      type="module"
+      src="{{ $components.RelPermalink }}">
+    </script>
+
     {{ $utils := resources.Get "js/utils.js" | resources.Minify | resources.Fingerprint "sha256" }}
     <script
       type="text/javascript"
-      src="{{ $utils.RelPermalink }}"
-      integrity="{{ $utils.Data.Integirty }}">
+      src="{{ $utils.RelPermalink }}">
     </script>
 
     {{ block "javascripts" . }}

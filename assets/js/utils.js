@@ -34,20 +34,3 @@ function month_name(month_num) {
       return "";
   }
 }
-
-/*
- * Functions used to help display compendium entries
- */
-
-function get_authors(entry) {
-  // Entry authors
-  if (entry.authors.length === 0) {
-    entry.authors = ["Unknown"];
-  }
-  return entry.authors.join(", ");
-}
-
-function get_tags(entry) {
-  // Entry tags
-  return entry.tags.join(", ");
-}
