@@ -17,7 +17,7 @@ from bibtexparser.bparser import BibTexParser # type: ignore
 from collections import Counter
 from dataclasses import dataclass
 from hashlib import sha256
-from slugify import slugify # type: ignore
+from slugify import slugify
 from typing import Dict, List, Optional, Union
 from pathlib import Path
 
